@@ -7,7 +7,7 @@ import selenium.core.Core;
 public class AmazonHome {
 
 	private void firstOpen() {
-		Core.browser().goToUrl("https://www.amazon.es/");
+		Core.browser().goToUrl(Urls.HOME.getUrl());
 	}
 
 	By locatorSearchBar = By.id("twotabsearchtextbox");
