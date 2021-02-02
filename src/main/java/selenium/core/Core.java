@@ -79,9 +79,11 @@ public class Core {
 
 			chromeOptions.addArguments("--incognito");
 			chromeOptions.addArguments("--start-maximized");
-			chromeOptions.addArguments("--allow-running-insecure-content");
-//			chromeOptions.addArguments("--headless");
-
+			if (extension.equals("")) {
+				chromeOptions.addArguments("--disable-dev-shm-usage");
+				chromeOptions.addArguments("--no-sandbox");
+				chromeOptions.addArguments("--headless");
+			}
 			browser().driver = new ChromeDriver(new ChromeDriverService.Builder().usingPort(port).build(),
 					chromeOptions);
 			break;
@@ -90,6 +92,8 @@ public class Core {
 			FirefoxOptions firefoxOptions = new FirefoxOptions();
 
 			firefoxOptions.addArguments("--private");
+			if (extension.equals(""))
+				firefoxOptions.addArguments("-headless");
 
 			browser().driver = new FirefoxDriver(new GeckoDriverService.Builder().usingPort(port).build(),
 					firefoxOptions);
