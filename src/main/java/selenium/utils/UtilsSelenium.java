@@ -1,7 +1,7 @@
 package selenium.utils;
 
-
 import java.util.List;
+import java.util.Set;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -10,7 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 import webdriver.utils.AbstractActions;
-
 
 public class UtilsSelenium extends AbstractActions {
 
@@ -200,6 +199,22 @@ public class UtilsSelenium extends AbstractActions {
 			}
 		}
 	}
+	
+	public Set<String> getWindows() {
+		return driver.getWindowHandles();
+	}
 
+	public void switchWindowFromMain() {
+		String main = driver.getWindowHandle();
+		if (getParam("mainWindow") == null || getParam("mainWindow").isEmpty())
+			putParam("mainWindow", main);
+		Set<String> windows = driver.getWindowHandles();
+		String newWindow = windows.stream().filter(x -> !x.equals(main)).findFirst().get();
+		driver.switchTo().window(newWindow);
+	}
+	
+	public void switchToMainWindow() {
+		driver.switchTo().window(getParam("mainWindow"));
+	}
 
 }
