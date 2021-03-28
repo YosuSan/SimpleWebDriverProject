@@ -197,14 +197,25 @@ public abstract class AbstractActions extends AbstractUtils {
 	 * @return boolean of successful
 	 */
 	public boolean sendKeys(By locator, String args) {
+		return sendKeys(getElement(locator), args);
+	}
+	
+	/**
+	 * Send a String into element
+	 * 
+	 * @param element to send the String
+	 * @param args    the String
+	 * @return boolean of successful
+	 */
+	public boolean sendKeys(WebElement element, String args) {
 		int time = 0;
 		while (time++ < 40) {
 			try {
-				getElement(locator).sendKeys(args);
+				element.sendKeys(args);
 				try {
-					setLog("Enter => '" + args + "', into locator => " + locator.toString());
+					setLog("Enter => '" + args + "', into element => " + element.toString());
 				} catch (Exception ex) {
-					setLog("Enter => '" + args + "', into locator => " + locator.toString());
+					setLog("Enter => '" + args + "', into element => " + element.toString());
 					return true;
 				}
 				return true;

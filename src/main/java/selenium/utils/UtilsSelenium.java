@@ -3,9 +3,11 @@ package selenium.utils;
 import java.util.List;
 import java.util.Set;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
@@ -200,6 +202,34 @@ public class UtilsSelenium extends AbstractActions {
 		}
 	}
 	
+	/**
+	 * Set index value in select element
+	 * 
+	 * @param Select element
+	 * @param index
+	 */
+	public String selectInSelectByIndex(By locator, int index) {
+		Select select = new Select(getElement(locator));
+		select.selectByIndex(index);
+		String value = select.getOptions().get(index).getText();
+		setLog("Set => '" + value + "', into select field locator => " + locator.toString());
+		return value;
+	}
+	
+	/**
+	 * Set index value in select element
+	 * 
+	 * @param Select element
+	 * @param index
+	 */
+	public String selectInSelectByIndex(WebElement element, int index) {
+		Select select = new Select(element);
+		select.selectByIndex(index);
+		String value = select.getOptions().get(index).getText();
+		setLog("Set => '" + value + "', into select field element => " + element.toString());
+		return value;
+	}
+	
 	public Set<String> getWindows() {
 		return driver.getWindowHandles();
 	}
@@ -215,6 +245,62 @@ public class UtilsSelenium extends AbstractActions {
 	
 	public void switchToMainWindow() {
 		driver.switchTo().window(getParam("mainWindow"));
+	}
+	
+	public Alert getAlert() {
+		return driver.switchTo().alert();
+	}
+	
+	public boolean isAlert() {
+		try {
+			getAlert();
+		} catch (NoAlertPresentException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	public String alertGetText() {
+		return getAlert().getText();
+	}
+	
+	public void alertAccept() {
+		setLog("Accept alert");
+		getAlert().accept();
+	}
+	
+	public void alertDismiss() {
+		setLog("Cancel alert");
+		getAlert().dismiss();
+	}
+	
+	public void alertSendKeys(String keys) {
+		setLog("Enter => '" + keys + "', into alert");
+		getAlert().sendKeys(keys);
+	}
+	
+	public void switchToDefaultContent() {
+		setLog("Switch driver to default content");
+		driver.switchTo().defaultContent();
+	}
+	
+	public void switchToIFrame(WebElement element) {
+		setLog("Switch driver to iframe element => " + element.toString());
+		driver.switchTo().frame(element);
+	}
+	
+	public void switchToIFrame(By locator) {
+		switchToIFrame(getElement(locator));
+	}
+	
+	public void switchToIFrame(String nameOrId) {
+		setLog("Switch driver to iframe with id or name => " + nameOrId);
+		driver.switchTo().frame(nameOrId);
+	}
+	
+	public void switchToIFrame(int index) {
+		setLog("Switch driver to iframe index => " + index);
+		driver.switchTo().frame(index);
 	}
 
 }
