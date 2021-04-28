@@ -1,7 +1,5 @@
 package android.core;
 
-import java.io.IOException;
-import java.net.ServerSocket;
 import java.util.Arrays;
 import java.util.logging.Level;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -32,7 +30,7 @@ public class AppiumNode {
 	private int port = 4444;
 	private String reportDirectory = "reports";
 	private String reportFormat = "html";
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(AppiumNode.class);
 
 	/**
@@ -42,12 +40,10 @@ public class AppiumNode {
 		return device;
 	}
 
-
-
 	@BeforeSuite(alwaysRun = true, dependsOnMethods = "testParams")
 	public void openAppiumNode() {
 
-		while (checkIfPortIsBusy(port))
+		while (device().checkIfPortIsBusy(port))
 			port += 100;
 		LOG.info("Open appium node on port => " + port);
 		AppiumServiceBuilder builder = new AppiumServiceBuilder();
@@ -105,7 +101,7 @@ public class AppiumNode {
 		device().sleepSeconds(2);
 		device().driver = null;
 		int currentPort = service.getUrl().getPort();
-		LOG.info("The port " + currentPort + " is busy => " + checkIfPortIsBusy(currentPort));
+		LOG.info("The port " + currentPort + " is busy => " + device().checkIfPortIsBusy(currentPort));
 		service = null;
 
 		port = 4444;
@@ -178,26 +174,6 @@ public class AppiumNode {
 		device().sendScript("adb shell am force-stop " + device().getParam("appPackage"));
 		device().sendScript("adb shell input keyevent HOME");
 		device().sendScript("adb shell input keyevent HOME");
-	}
-
-	/**
-	 * Check if a port is currently on use or not
-	 * 
-	 * @param port integer with port number
-	 * @return boolean, true if port is free
-	 */
-	private boolean checkIfPortIsBusy(int port) {
-		boolean running = false;
-		ServerSocket socket;
-		try {
-			socket = new ServerSocket(port);
-			socket.close();
-		} catch (IOException e) {
-			running = true;
-		} finally {
-			socket = null;
-		}
-		return running;
 	}
 
 	/**

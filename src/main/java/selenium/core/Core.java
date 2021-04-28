@@ -42,33 +42,13 @@ public class Core {
 		return utils;
 	}
 
-	/**
-	 * Check if a port is currently on use or not
-	 * 
-	 * @param port integer with port number
-	 * @return boolean, true if port is free
-	 */
-	private boolean checkIfPortIsBusy() {
-		boolean running = false;
-		ServerSocket socket;
-		try {
-			socket = new ServerSocket(port);
-			socket.close();
-		} catch (IOException e) {
-			running = true;
-		} finally {
-			socket = null;
-		}
-		return running;
-	}
-
 	@BeforeSuite(alwaysRun = true, dependsOnMethods = "testParams")
 	public void openDriver() throws IOException {
 		String extension = System.getProperty("os.name").contains("indows") ? ".exe" : "";
 		String browser = browser().getParam("browser").toLowerCase();
 		ChromeOptions chromeOptions;
 
-		while (checkIfPortIsBusy())
+		while (browser().checkIfPortIsBusy(port))
 			port += 100;
 		LOG.info("Open Selenium driver on port => " + port);
 
@@ -130,10 +110,10 @@ public class Core {
 		}
 		browser().driver.quit();
 		browser().driver = null;
-		port = 4567;
 		browser().clearParams();
 		if (closeAllChromeDrivers)
 			browser().sendScript("taskkill /IM chromed* /F");
-		LOG.info("The port is busy => " + checkIfPortIsBusy());
+		LOG.info("The port is busy => " + browser().checkIfPortIsBusy(port));
+		port = 4567;
 	}
 }

@@ -25,7 +25,7 @@ public abstract class AbstractActions extends AbstractUtils {
 	public WebDriver driver;
 	public WebDriverWait wait;
 	private Actions action;
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractActions.class);
 
 	/**
@@ -137,12 +137,7 @@ public abstract class AbstractActions extends AbstractUtils {
 		while (time++ < 40) {
 			try {
 				element.click();
-				try {
-					setLog("Click on element with text => " + element.getText().toString());
-				} catch (Exception e) {
-					String locator = element.toString().substring(element.toString().indexOf("->") + 2);
-					setLog("Click on locator => " + locator);
-				}
+				setLog("Click on locator => " + getLocatorFromElement(element));
 				return true;
 			} catch (Exception e) {
 				sleepMillis(200);
@@ -199,7 +194,7 @@ public abstract class AbstractActions extends AbstractUtils {
 	public boolean sendKeys(By locator, String args) {
 		return sendKeys(getElement(locator), args);
 	}
-	
+
 	/**
 	 * Send a String into element
 	 * 
@@ -212,12 +207,7 @@ public abstract class AbstractActions extends AbstractUtils {
 		while (time++ < 40) {
 			try {
 				element.sendKeys(args);
-				try {
-					setLog("Enter => '" + args + "', into element => " + element.toString());
-				} catch (Exception ex) {
-					setLog("Enter => '" + args + "', into element => " + element.toString());
-					return true;
-				}
+				setLog("Enter => '" + args + "', into locator => " + getLocatorFromElement(element));
 				return true;
 			} catch (Exception e) {
 				sleepMillis(200);
@@ -264,7 +254,7 @@ public abstract class AbstractActions extends AbstractUtils {
 			setLog("Wait for visibility of locator => " + locator.toString());
 			return getElement(locator).isDisplayed();
 		} catch (Exception e) {
-			e.getMessage();
+			LOG.error(e.getMessage());
 		}
 		return false;
 	}
@@ -280,7 +270,7 @@ public abstract class AbstractActions extends AbstractUtils {
 			setLog("Wait for visibility of locator => " + element.toString());
 			return element.isDisplayed();
 		} catch (Exception e) {
-			e.getMessage();
+			LOG.error(e.getMessage());
 		}
 		return false;
 	}
@@ -298,7 +288,7 @@ public abstract class AbstractActions extends AbstractUtils {
 			setLog("Wait for visibility of locator => " + locator.toString());
 			return getElement(locator).isDisplayed();
 		} catch (Exception e) {
-			e.getMessage();
+			LOG.error(e.getMessage());
 		}
 		return false;
 	}
@@ -312,10 +302,10 @@ public abstract class AbstractActions extends AbstractUtils {
 	public boolean waitForVisibility(WebElement element, int seconds) {
 		try {
 			wait.withTimeout(Duration.ofSeconds(seconds)).until(ExpectedConditions.visibilityOf(element));
-			setLog("Wait for visibility of element => " + element.toString());
+			setLog("Wait for visibility of element => " + getLocatorFromElement(element));
 			return element.isDisplayed();
 		} catch (Exception e) {
-			e.getMessage();
+			LOG.error(e.getMessage());
 		}
 		return false;
 	}
