@@ -71,7 +71,7 @@ public class AppiumNode {
 			((AndroidDriver) device().driver).setLogLevel(Level.INFO);
 			device().wait = new WebDriverWait(device().driver, 10);
 		} else {
-			if (device().getParam("appActivity") == null)
+			if (device().getParam("appWaitActivity") == null)
 				device().openApp(device().getParam("appPackage"), device().getParam("appActivity"));
 			else
 				device().openApp(device().getParam("appPackage"), device().getParam("appActivity"),
