@@ -10,6 +10,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Listeners;
 
 import android.utils.UtilsAppium;
 import io.appium.java_client.android.Activity;
@@ -20,7 +21,9 @@ import io.appium.java_client.remote.MobilePlatform;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.service.local.flags.GeneralServerFlag;
+import webdriver.utils.Listener;
 
+@Listeners(Listener.class)
 @SuppressWarnings({ "rawtypes" })
 public class AppiumNode {
 

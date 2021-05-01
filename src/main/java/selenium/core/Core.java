@@ -17,9 +17,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.Listeners;
 
 import selenium.utils.UtilsSelenium;
+import webdriver.utils.Listener;
 
+@Listeners(Listener.class)
 /**
  * Manage creation and destruction of selenium driver
  * 
