@@ -3,6 +3,7 @@ package webdriver.utils;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.ServerSocket;
+import java.util.Date;
 import java.util.HashMap;
 
 import org.openqa.selenium.WebElement;
@@ -73,6 +74,10 @@ public abstract class AbstractUtils {
 	public void setLog(String action) {
 		Reporter.log(action + "<br>");
 		LOG.info(action);
+	}
+
+	public String getTimeStamp() {
+		return String.valueOf(new Date().getTime());
 	}
 
 }

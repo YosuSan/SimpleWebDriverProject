@@ -13,6 +13,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.assertthat.selenium_shutterbug.core.Shutterbug;
+
 /**
  * This class contains WebDriver and the actions that belongs to it, also
  * screenshots, log report and params.
@@ -340,6 +342,34 @@ public abstract class AbstractActions extends AbstractUtils {
 	 */
 	public String getText(WebElement element) {
 		return element.getText();
+	}
+
+	/**
+	 * Take a screenshot of current window and save it with timestamp in screenshot
+	 * folder
+	 */
+	public void takeScreenShot() {
+		Shutterbug.shootPage(driver).withName(getTimeStamp()).save();
+	}
+
+	/**
+	 * Take a screenshot of current window highlighting a webelement and save it
+	 * with timestamp in screenshot folder
+	 * 
+	 * @param element
+	 */
+	public void takeScreenShotHighlightElement(WebElement element) {
+		Shutterbug.shootPage(driver).highlight(element).withName(getTimeStamp()).save();
+	}
+
+	/**
+	 * Take a screenshot of a webelement and save it with timestamp in screenshot
+	 * folder
+	 * 
+	 * @param element
+	 */
+	public void takeScreenShotElement(WebElement element) {
+		Shutterbug.shootElement(driver, element).withName(getTimeStamp()).save();
 	}
 
 	/**
