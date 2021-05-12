@@ -74,18 +74,18 @@ public class AppiumNode {
 			((AndroidDriver) device().driver).setLogLevel(Level.INFO);
 			device().wait = new WebDriverWait(device().driver, 10);
 		} else {
-			if (device().getParam("appWaitActivity") == null)
-				device().openApp(device().getParam("appPackage"), device().getParam("appActivity"));
+			if (UtilsAppium.getParam("appWaitActivity") == null)
+				device().openApp(UtilsAppium.getParam("appPackage"), UtilsAppium.getParam("appActivity"));
 			else
-				device().openApp(device().getParam("appPackage"), device().getParam("appActivity"),
-						device().getParam("appWaitActivity"));
+				device().openApp(UtilsAppium.getParam("appPackage"), UtilsAppium.getParam("appActivity"),
+						UtilsAppium.getParam("appWaitActivity"));
 		}
 
 		if (checkPhoneIsLocked()) {
 			device().sleepSeconds(2);
 			setPhoneInHome();
 			((AndroidDriver) device().driver)
-					.startActivity(new Activity(device().getParam("appPackage"), device().getParam("appActivity")));
+					.startActivity(new Activity(UtilsAppium.getParam("appPackage"), UtilsAppium.getParam("appActivity")));
 		}
 		forcePermissions();
 
@@ -93,8 +93,8 @@ public class AppiumNode {
 
 	@AfterClass(alwaysRun = true)
 	public void closeAndClearApp() {
-		device().sendScript("adb shell am force-stop " + device().getParam("appPackage"));
-		device().sendScript("adb shell pm clear " + device().getParam("appPackage"));
+		device().sendScript("adb shell am force-stop " + UtilsAppium.getParam("appPackage"));
+		device().sendScript("adb shell pm clear " + UtilsAppium.getParam("appPackage"));
 	}
 
 	@AfterSuite(alwaysRun = true)
@@ -120,8 +120,8 @@ public class AppiumNode {
 	private DesiredCapabilities setCapabilities() {
 
 		int timeout = 600;
-		boolean noReset = Boolean.parseBoolean(device().getParam("noReset"));
-		String testName = "Suite " + device().getParam("suite");
+		boolean noReset = Boolean.parseBoolean(UtilsAppium.getParam("noReset"));
+		String testName = "Suite " + UtilsAppium.getParam("suite");
 
 		DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("reportDirectory", reportDirectory);
@@ -134,8 +134,8 @@ public class AppiumNode {
 		capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, timeout);
 		capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, MobilePlatform.ANDROID);
 		capabilities.setCapability(AndroidMobileCapabilityType.AUTO_GRANT_PERMISSIONS, true);
-		capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, device().getParam("appPackage"));
-		capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, device().getParam("appActivity"));
+		capabilities.setCapability(AndroidMobileCapabilityType.APP_PACKAGE, UtilsAppium.getParam("appPackage"));
+		capabilities.setCapability(AndroidMobileCapabilityType.APP_ACTIVITY, UtilsAppium.getParam("appActivity"));
 		capabilities.setCapability(MobileCapabilityType.ORIENTATION, "PORTRAIT");
 		capabilities.setCapability(MobileCapabilityType.LANGUAGE, "es");
 		capabilities.setCapability(MobileCapabilityType.LOCALE, "ES");
@@ -149,9 +149,9 @@ public class AppiumNode {
 	 * @param device String with device's serialNo
 	 */
 	private void clearData() {
-		boolean noReset = Boolean.parseBoolean(device().getParam("noReset"));
+		boolean noReset = Boolean.parseBoolean(UtilsAppium.getParam("noReset"));
 		if (!noReset)
-			device().sendScript("adb shell pm clear " + device().getParam("appPackage"));
+			device().sendScript("adb shell pm clear " + UtilsAppium.getParam("appPackage"));
 	}
 
 	/**
@@ -174,7 +174,7 @@ public class AppiumNode {
 	 * @param device String with device's serialNo
 	 */
 	private void setPhoneInHome() {
-		device().sendScript("adb shell am force-stop " + device().getParam("appPackage"));
+		device().sendScript("adb shell am force-stop " + UtilsAppium.getParam("appPackage"));
 		device().sendScript("adb shell input keyevent HOME");
 		device().sendScript("adb shell input keyevent HOME");
 	}
@@ -185,7 +185,7 @@ public class AppiumNode {
 	 * @param device String with device's serialNo
 	 */
 	private void forcePermissions() {
-		String app = device().getParam("appPackage");
+		String app = UtilsAppium.getParam("appPackage");
 		String command = "adb shell pm grant " + app + " ";
 		String permissions[] = { "android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE",
 				"android.permission.READ_EXTERNAL_STORAGE", "android.permission.ACCESS_FINE_LOCATION",

@@ -29,14 +29,14 @@ import webdriver.utils.Listener;
  * @author Jose Sanjuan Gonzalez
  *
  */
-public class Core {
+public class SeleniumCore {
 
 	private int port = 4567;
 	private static boolean closeAllChromeDrivers = false;
 	private static UtilsSelenium utils = new UtilsSelenium();
 	private static final String DRIVERS_PATH = "lib/drivers/";
 
-	private static final Logger LOG = LoggerFactory.getLogger(Core.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SeleniumCore.class);
 
 	/**
 	 * @return current browser on use
@@ -48,7 +48,7 @@ public class Core {
 	@BeforeSuite(alwaysRun = true, dependsOnMethods = "testParams")
 	public void openDriver() throws IOException {
 		String extension = System.getProperty("os.name").contains("indows") ? ".exe" : "";
-		String browser = browser().getParam("browser").toLowerCase();
+		String browser = UtilsSelenium.getParam("browser").toLowerCase();
 		ChromeOptions chromeOptions;
 
 		while (browser().checkIfPortIsBusy(port))

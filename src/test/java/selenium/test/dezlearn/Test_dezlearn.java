@@ -6,15 +6,16 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import selenium.core.Core;
+import selenium.core.SeleniumCore;
 import selenium.pages.dezlearn.IFrames;
 import selenium.pages.dezlearn.IFramesNested;
 import selenium.pages.dezlearn.JavaScriptAlerts;
 import selenium.pages.dezlearn.MultiWindow;
 import selenium.pages.dezlearn.TestSync;
 import selenium.pages.dezlearn.WebTable;
+import webdriver.utils.AbstractUtils;
 
-public class Test_dezlearn extends Core {
+public class Test_dezlearn extends SeleniumCore {
 
 	private TestSync testSync;
 	private MultiWindow multiWindows;
@@ -40,7 +41,8 @@ public class Test_dezlearn extends Core {
 	@BeforeSuite
 	@Parameters({ "browser" })
 	public void testParams(@Optional("chrome") String browser) {
-		browser().putParam("browser", browser);
+		AbstractUtils.putParam("browser", browser);
+		AbstractUtils.putParam("SuiteName", "DezLearn");
 	}
 
 	@Test(description = "Fill all data and wait for order number", testName = "Fill data", dataProvider = "users")
@@ -85,7 +87,7 @@ public class Test_dezlearn extends Core {
 	}
 	
 	@Test(description = "Click on button inside nested iframes", testName = "NestedIframes example")
-	public void test05_nestedIFramesExamples() {
+	public void test06_nestedIFramesExamples() {
 		iframesNested.clickInNestedIframes();
 	}
 

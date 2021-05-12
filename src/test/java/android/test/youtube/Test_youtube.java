@@ -7,6 +7,7 @@ import android.core.AppiumNode;
 import android.pages.youtube.YoutubeCamera;
 import android.pages.youtube.YoutubeHome;
 import android.pages.youtube.YoutubeLibrary;
+import webdriver.utils.AbstractUtils;
 
 public class Test_youtube extends AppiumNode {
 
@@ -22,10 +23,11 @@ public class Test_youtube extends AppiumNode {
 	
 	@BeforeSuite
 	public void testParams() {
-		device().putParam("appPackage", "com.google.android.youtube");
-		device().putParam("appActivity", "com.google.android.apps.youtube.app.WatchWhileActivity");
-		device().putParam("noReset", "false");
-//		device().putParam("appWaitActivity", "");
+		AbstractUtils.putParam("appPackage", "com.google.android.youtube");
+		AbstractUtils.putParam("appActivity", "com.google.android.apps.youtube.app.WatchWhileActivity");
+		AbstractUtils.putParam("noReset", "false");
+//		AbstractUtils.putParam("appWaitActivity", "");
+		AbstractUtils.putParam("SuiteName", "Youtube");
 	}
 
 	@Test(priority = 0, description = "Upload a video", testName = "Upload video", enabled = true)

@@ -1,15 +1,13 @@
 package selenium.pages.dezlearn;
 
-import static org.testng.Assert.assertTrue;
-
 import org.openqa.selenium.By;
 
-import selenium.core.Core;
+import selenium.core.SeleniumCore;
 
 public class JavaScriptAlerts {
 
 	private void goPage() {
-		Core.browser().goToUrl(Urls.JS_ALERTS.getUrl());
+		SeleniumCore.browser().goToUrl(Urls.JS_ALERTS.getUrl());
 	}
 
 	By locatorSimpleAlert = By.id("s_alert1");
@@ -18,12 +16,12 @@ public class JavaScriptAlerts {
 		goPage();
 
 		String expectedMsg = "A test alert message from Dezlearn";
-		Core.browser().click(locatorSimpleAlert);
-		String alertText = Core.browser().alertGetText();
-		Core.browser().setLog("Alert text => " + alertText);
-		assertTrue(expectedMsg.equals(alertText), "Alert message it's different from expected");
-		Core.browser().alertAccept();
-		Core.browser().sleepSeconds(1);
+		SeleniumCore.browser().click(locatorSimpleAlert);
+		String alertText = SeleniumCore.browser().alertGetText();
+		SeleniumCore.browser().setLog("Alert text => " + alertText);
+		SeleniumCore.browser().alertAccept();
+		SeleniumCore.browser().assertTrue(expectedMsg.equals(alertText), "Alert message it's different from expected");
+		SeleniumCore.browser().sleepSeconds(1);
 	}
 
 	By locatorConfirmationAlert = By.id("c_alert2");
@@ -33,24 +31,25 @@ public class JavaScriptAlerts {
 	 * @param option accept or cancel
 	 */
 	public void confirmationManagement(String option) {
-		boolean originalAlert = Core.browser().isAlert();
+		boolean originalAlert = SeleniumCore.browser().isAlert();
 		if (!originalAlert) {
 			goPage();
-			Core.browser().click(locatorConfirmationAlert);
+			SeleniumCore.browser().click(locatorConfirmationAlert);
 		}
 
-		String alertText = Core.browser().alertGetText();
-		Core.browser().setLog("Alert text => " + alertText);
+		String alertText = SeleniumCore.browser().alertGetText();
+		SeleniumCore.browser().setLog("Alert text => " + alertText);
 		if ("accept".equals(option))
-			Core.browser().alertAccept();
+			SeleniumCore.browser().alertAccept();
 		else
-			Core.browser().alertDismiss();
+			SeleniumCore.browser().alertDismiss();
 
-		assertTrue(Core.browser().waitForVisibility(locatorConfirmationMsg, 3), "There aren't confirmation message");
-		String actionMsg = Core.browser().getText(locatorConfirmationMsg);
-		Core.browser().setLog("Action message => " + actionMsg);
+		SeleniumCore.browser().assertTrue(SeleniumCore.browser().waitForVisibility(locatorConfirmationMsg, 3),
+				"There aren't confirmation message");
+		String actionMsg = SeleniumCore.browser().getText(locatorConfirmationMsg);
+		SeleniumCore.browser().setLog("Action message => " + actionMsg);
 
-		Core.browser().sleepSeconds(2);
+		SeleniumCore.browser().sleepSeconds(2);
 	}
 
 	By locatorPromptAlert = By.id("p_alert3");
@@ -58,8 +57,8 @@ public class JavaScriptAlerts {
 	public void promptAlert(String keys, String option) {
 		goPage();
 
-		Core.browser().click(locatorPromptAlert);
-		Core.browser().alertSendKeys(keys);
+		SeleniumCore.browser().click(locatorPromptAlert);
+		SeleniumCore.browser().alertSendKeys(keys);
 		confirmationManagement(option);
 	}
 

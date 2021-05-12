@@ -6,10 +6,12 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import selenium.core.Core;
+import selenium.core.SeleniumCore;
 import selenium.pages.telefonica.TelefonicaHome;
+import selenium.utils.UtilsSelenium;
+import webdriver.utils.AbstractUtils;
 
-public class Test_telefonica extends Core {
+public class Test_telefonica extends SeleniumCore {
 	
 	private TelefonicaHome home;
 	
@@ -20,7 +22,8 @@ public class Test_telefonica extends Core {
 	@BeforeSuite
 	@Parameters({ "browser" })
 	public void testParams(@Optional("chrome") String browser) {
-		browser().putParam("browser", browser);
+		UtilsSelenium.putParam("browser", browser);
+		AbstractUtils.putParam("SuiteName", "Telefonica");
 	}
 	
 	@Test(description = "Go to home page and get all tags 'a' with href in domain", testName = "Get hrefs on domain")

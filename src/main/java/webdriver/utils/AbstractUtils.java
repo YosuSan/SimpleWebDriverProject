@@ -1,5 +1,8 @@
 package webdriver.utils;
 
+import static webdriver.utils.extentreport.ExtentTestManager.getTest;
+import static webdriver.utils.extentreport.ExtentTestManager.lastImage;
+
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.ServerSocket;
@@ -10,6 +13,8 @@ import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Reporter;
+
+import com.aventstack.extentreports.Status;
 
 /**
  * This class manage params, log report, and data provider
@@ -22,11 +27,11 @@ public abstract class AbstractUtils {
 	private static HashMap<String, String> params = new HashMap<>();
 	public final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public void putParam(String key, String value) {
+	public static void putParam(String key, String value) {
 		params.put(key, value);
 	}
 
-	public String getParam(String key) {
+	public static String getParam(String key) {
 		return params.get(key);
 	}
 
@@ -66,14 +71,54 @@ public abstract class AbstractUtils {
 	}
 
 	/**
-	 * Set new line into log with the last screen capture
+	 * Set new line into log info with the last screen capture
 	 * 
 	 * @param action
 	 * @return
 	 */
 	public void setLog(String action) {
+		if (getParam("screenshot") == null || getParam("screenshot").isEmpty())
+			getTest().log(Status.PASS, action);
+		else
+			getTest().log(Status.PASS, action,
+					getTest().addScreenCaptureFromPath(getParam("screenshot")).getModel().getMedia().get(lastImage()));
 		Reporter.log(action + "<br>");
 		LOG.info(action);
+		putParam("screenshot", "");
+	}
+
+	/**
+	 * Set new line into log with the last screen capture
+	 * 
+	 * @param action
+	 * @return
+	 */
+	public void setLogError(String action) {
+		if (getParam("screenshot") == null || getParam("screenshot").isEmpty())
+			getTest().log(Status.FAIL, action);
+		else
+			getTest().log(Status.FAIL, action,
+					getTest().addScreenCaptureFromPath(getParam("screenshot")).getModel().getMedia().get(lastImage()));
+		Reporter.log(action + "<br>");
+		LOG.error(action);
+		putParam("screenshot", "");
+	}
+
+	/**
+	 * Set new line into log with the last screen capture
+	 * 
+	 * @param action
+	 * @return
+	 */
+	public void setLogWarning(String action) {
+		if (getParam("screenshot") == null || getParam("screenshot").isEmpty())
+			getTest().log(Status.WARNING, action);
+		else
+			getTest().log(Status.WARNING, action,
+					getTest().addScreenCaptureFromPath(getParam("screenshot")).getModel().getMedia().get(lastImage()));
+		Reporter.log(action + "<br>");
+		LOG.warn(action);
+		putParam("screenshot", "");
 	}
 
 	public String getTimeStamp() {

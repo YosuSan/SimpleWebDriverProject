@@ -1,11 +1,8 @@
 package android.pages.youtube;
 
-import static org.testng.Assert.assertTrue;
-
 import org.openqa.selenium.By;
 
 import android.core.AppiumNode;
-
 
 public class YoutubeHome {
 
@@ -14,8 +11,9 @@ public class YoutubeHome {
 
 	public void goCamera() {
 		AppiumNode.device().waitForVisibility(locatorCamera);
-		assertTrue(AppiumNode.device().click(locatorCamera), "locatorCamera couldn't be clicked\n");
-		assertTrue(AppiumNode.device().click(locatorVideoUpload), "locatorVideoUpload couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorCamera), "locatorCamera couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorVideoUpload),
+				"locatorVideoUpload couldn't be clicked\n");
 	}
 
 	By locatorBiblio = By
@@ -23,7 +21,7 @@ public class YoutubeHome {
 
 	public void goLibrary() {
 		AppiumNode.device().waitForVisibility(locatorBiblio);
-		assertTrue(AppiumNode.device().click(locatorBiblio), "locatorBiblio couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorBiblio), "locatorBiblio couldn't be clicked\n");
 	}
 
 	By locatorSearchIcon = By.id("com.google.android.youtube:id/menu_item_1");
@@ -35,17 +33,19 @@ public class YoutubeHome {
 
 	public void searchAndPlay(String toSearch) {
 
-		assertTrue(AppiumNode.device().click(locatorSearchIcon), "locatorSearchIcon couldn't be clicked\n");
-		assertTrue(AppiumNode.device().sendKeys(locatorSearchBar, toSearch),
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorSearchIcon),
+				"locatorSearchIcon couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().sendKeys(locatorSearchBar, toSearch),
 				toSearch + "couldn't be sended to locatorSearchBar\n");
-		assertTrue(AppiumNode.device().click(locatorSearchResult), "locatorSearchResult couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorSearchResult),
+				"locatorSearchResult couldn't be clicked\n");
 		try {
-			assertTrue(AppiumNode.device().click(locatorFirstVideoResult));
+			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorFirstVideoResult));
 			AppiumNode.device().sleepSeconds(15);
 			AppiumNode.device().setLog("Video is playing");
 		} catch (AssertionError e) {
 			AppiumNode.device().scrollTo(locatorFirstVideoResult);
-			assertTrue(AppiumNode.device().click(locatorFirstVideoResult),
+			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorFirstVideoResult),
 					"locatorFirstVideoResult couldn't be clicked\n");
 		}
 	}

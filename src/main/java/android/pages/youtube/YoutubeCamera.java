@@ -1,11 +1,8 @@
 package android.pages.youtube;
 
-import static org.testng.Assert.assertTrue;
-
 import org.openqa.selenium.By;
 
 import android.core.AppiumNode;
-
 
 public class YoutubeCamera {
 
@@ -18,18 +15,20 @@ public class YoutubeCamera {
 
 	public void uploadVideo(boolean storageVideo) {
 		if (storageVideo && AppiumNode.device().click(locatorFirstVideo)) {
-			assertTrue(storageVideo);
+			AppiumNode.device().assertTrue(storageVideo);
 		} else {
-			assertTrue(AppiumNode.device().click(locatorRec), "locatorRec couldn't be clicked\n");
-			assertTrue(AppiumNode.device().click(locatorShutter), "locatorShutter couldn't be clicked\n");
+			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorRec), "locatorRec couldn't be clicked\n");
+			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorShutter),
+					"locatorShutter couldn't be clicked\n");
 			AppiumNode.device().sleepSeconds(10);
-			assertTrue(AppiumNode.device().click(locatorShutter), "locatorShutter couldn't be clicked\n");
-			assertTrue(AppiumNode.device().click(locatorDone), "locatorDone couldn't be clicked\n");
+			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorShutter),
+					"locatorShutter couldn't be clicked\n");
+			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorDone), "locatorDone couldn't be clicked\n");
 		}
 
 		AppiumNode.device().sleepSeconds(2);
-		assertTrue(AppiumNode.device().click(locatorSend), "locatorSend couldn't be clicked\n");
-		assertTrue(AppiumNode.device().click(locatorUpload), "locatorUpload couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorSend), "locatorSend couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorUpload), "locatorUpload couldn't be clicked\n");
 
 	}
 

@@ -1,15 +1,13 @@
 package selenium.pages.dezlearn;
 
-import static org.testng.Assert.assertTrue;
-
 import org.openqa.selenium.By;
 
-import selenium.core.Core;
+import selenium.core.SeleniumCore;
 
 public class IFramesNested {
 
 	private void goPage() {
-		Core.browser().goToUrl(Urls.NESTED_IFRAMES.getUrl());
+		SeleniumCore.browser().goToUrl(Urls.NESTED_IFRAMES.getUrl());
 	}
 
 	By locatorParentIframe = By.id("parent_iframe");
@@ -22,18 +20,18 @@ public class IFramesNested {
 	public void clickInNestedIframes() {
 		goPage();
 
-		Core.browser().switchToIFrame(locatorParentIframe);
-		Core.browser().click(locatorParentButton);
-		String parentMsg = Core.browser().getText(locatorParentMsg);
-		Core.browser().setLog("Message inside parent iframe => " + parentMsg);
-		assertTrue(parentMsg.contains("iframe 1"), "Not expected message was returned");
-		Core.browser().sleepSeconds(2);
+		SeleniumCore.browser().switchToIFrame(locatorParentIframe);
+		SeleniumCore.browser().click(locatorParentButton);
+		String parentMsg = SeleniumCore.browser().getText(locatorParentMsg);
+		SeleniumCore.browser().setLog("Message inside parent iframe => " + parentMsg);
+		SeleniumCore.browser().assertTrue(parentMsg.contains("iframe 1"), "Not expected message was returned");
+		SeleniumCore.browser().sleepSeconds(2);
 
-		Core.browser().switchToIFrame(locatorNestedIframe);
-		Core.browser().click(locatorNestedButton);
-		String nestedtMsg = Core.browser().getText(locatorNestedMsg);
-		Core.browser().setLog("Message inside nested iframe => " + nestedtMsg);
-		assertTrue(nestedtMsg.contains("iframe 2"), "Not expected message was returned");
-		Core.browser().sleepSeconds(2);
+		SeleniumCore.browser().switchToIFrame(locatorNestedIframe);
+		SeleniumCore.browser().click(locatorNestedButton);
+		String nestedtMsg = SeleniumCore.browser().getText(locatorNestedMsg);
+		SeleniumCore.browser().setLog("Message inside nested iframe => " + nestedtMsg);
+		SeleniumCore.browser().assertTrue(nestedtMsg.contains("iframe 2"), "Not expected message was returned");
+		SeleniumCore.browser().sleepSeconds(2);
 	}
 }

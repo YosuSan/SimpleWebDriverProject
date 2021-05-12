@@ -1,7 +1,5 @@
 package android.pages.youtube;
 
-import static org.testng.Assert.assertTrue;
-
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -21,14 +19,18 @@ public class YoutubeLibrary {
 	public void deleteVideo() {
 		List<WebElement> list;
 		AppiumNode.device().sleepSeconds(1);
-		assertTrue(AppiumNode.device().click(locatorTusVideos), "locatorTusVideos couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorTusVideos),
+				"locatorTusVideos couldn't be clicked\n");
 		list = AppiumNode.device().driver().findElements(locatorVideoList);
 		int videos = list.size();
 		AppiumNode.device().waitForVisibility(locatorMenuVideos);
-		assertTrue(AppiumNode.device().click(locatorMenuVideos), "locatorMenuVideos couldn't be clicked\n");
-		assertTrue(AppiumNode.device().click(locatorEliminar), "locatorEliminar couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorMenuVideos),
+				"locatorMenuVideos couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorEliminar),
+				"locatorEliminar couldn't be clicked\n");
 		AppiumNode.device().waitForVisibility(locatorConfirmEliminar);
-		assertTrue(AppiumNode.device().click(locatorConfirmEliminar), "locatorConfirmEliminar couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorConfirmEliminar),
+				"locatorConfirmEliminar couldn't be clicked\n");
 		while (list.size() == videos) {
 			try {
 				list = AppiumNode.device().driver().findElements(locatorVideoList);
@@ -43,9 +45,10 @@ public class YoutubeLibrary {
 	By locatorStatus = By.id("com.google.android.youtube:id/upload_status_message");
 
 	public void confirmVideoIsUploaded() {
-		assertTrue(AppiumNode.device().click(locatorTusVideos), "locatorTusVideos couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorTusVideos),
+				"locatorTusVideos couldn't be clicked\n");
 		try {
-			assertTrue(AppiumNode.device().waitForVisibility(locatorReady, 40));
+			AppiumNode.device().assertTrue(AppiumNode.device().waitForVisibility(locatorReady, 40));
 			AppiumNode.device().setLog("Video was uploaded successfull");
 		} catch (AssertionError e) {
 			AppiumNode.device().setLog("Can't confirm that video was uploaded");

@@ -1,10 +1,8 @@
 package selenium.pages.amazon;
 
-import static org.testng.Assert.assertTrue;
-
 import org.openqa.selenium.By;
 
-import selenium.core.Core;
+import selenium.core.SeleniumCore;
 
 public class AmazonProductPage {
 
@@ -14,21 +12,21 @@ public class AmazonProductPage {
 
 	public void browseProduct(String quantity) {
 		boolean check = false;
-		Core.browser().click(locatorFirstResult);
-		if (Core.browser().waitForVisibility(locatorBuy)) {
+		SeleniumCore.browser().click(locatorFirstResult);
+		if (SeleniumCore.browser().waitForVisibility(locatorBuy)) {
 			try {
-				Core.browser().selectInSelectByText(locatorQuantity, quantity);
+				SeleniumCore.browser().selectInSelectByText(locatorQuantity, quantity);
 			} catch (Exception e) {
-				Core.browser().setLog("Can't select quantity");
+				SeleniumCore.browser().setLog("Can't select quantity");
 			}
 			for (int i = 0; i < 8; i++) {
-				Core.browser().scrollDown();
-				Core.browser().sleepSeconds(1);
+				SeleniumCore.browser().scrollDown();
+				SeleniumCore.browser().sleepSeconds(1);
 			}
-			Core.browser().sleepSeconds(2);
+			SeleniumCore.browser().sleepSeconds(2);
 			check = true;
 		}
-		assertTrue(check);
+		SeleniumCore.browser().assertTrue(check);
 	}
 
 }

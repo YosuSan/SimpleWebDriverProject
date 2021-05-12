@@ -5,11 +5,12 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import selenium.core.Core;
+import selenium.core.SeleniumCore;
 import selenium.pages.amazon.AmazonHome;
 import selenium.pages.amazon.AmazonProductPage;
+import webdriver.utils.AbstractUtils;
 
-public class Test_amazon extends Core {
+public class Test_amazon extends SeleniumCore {
 
 	private AmazonHome home;
 	private AmazonProductPage productPage;
@@ -22,7 +23,8 @@ public class Test_amazon extends Core {
 	@BeforeSuite
 	@Parameters({ "browser" })
 	public void testParams(@Optional("chrome") String browser) {
-		browser().putParam("browser", browser);
+		AbstractUtils.putParam("browser", browser);
+		AbstractUtils.putParam("SuiteName", "Amazon");
 	}
 
 	@Test(priority = 0, description = "Search a product, enter in the first result and select quantity", testName = "Search product")

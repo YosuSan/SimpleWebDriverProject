@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -12,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
 
 import com.assertthat.selenium_shutterbug.core.Shutterbug;
 
@@ -118,10 +120,11 @@ public abstract class AbstractActions extends AbstractUtils {
 		int time = 0;
 		while (time++ < 40) {
 			try {
+				takeScreenShotHighlightElement(getElement(locator));
 				getElement(locator).click();
 				setLog("Click on locator => " + locator.toString());
 				return true;
-			} catch (Exception e) {
+			} catch (NoSuchElementException e) {
 				sleepMillis(200);
 			}
 		}
@@ -139,6 +142,7 @@ public abstract class AbstractActions extends AbstractUtils {
 		while (time++ < 40) {
 			try {
 				element.click();
+				takeScreenShotHighlightElement(element);
 				setLog("Click on locator => " + getLocatorFromElement(element));
 				return true;
 			} catch (Exception e) {
@@ -159,6 +163,7 @@ public abstract class AbstractActions extends AbstractUtils {
 		if (waitForVisibility(locator)) {
 			getActions().clickAndHold(getElement(locator)).pause(Duration.ofSeconds(seconds)).release().build()
 					.perform();
+			takeScreenShotHighlightElement(getElement(locator));
 			setLog("Click and hold on locator => '" + locator.toString() + "' for " + seconds + " seconds");
 			return true;
 		}
@@ -177,6 +182,7 @@ public abstract class AbstractActions extends AbstractUtils {
 		while (time++ < 10 && !cleared) {
 			try {
 				getElement(locator).clear();
+				takeScreenShotHighlightElement(getElement(locator));
 				cleared = true;
 				setLog("Clear the text in locator => " + locator.toString());
 			} catch (Exception e) {
@@ -209,6 +215,7 @@ public abstract class AbstractActions extends AbstractUtils {
 		while (time++ < 40) {
 			try {
 				element.sendKeys(args);
+				takeScreenShotHighlightElement(element);
 				setLog("Enter => '" + args + "', into locator => " + getLocatorFromElement(element));
 				return true;
 			} catch (Exception e) {
@@ -230,6 +237,7 @@ public abstract class AbstractActions extends AbstractUtils {
 		while (time++ < 40) {
 			try {
 				getElement(locator).sendKeys(password);
+				takeScreenShotHighlightElement(getElement(locator));
 				try {
 					setLog("Enter => 'the password', into locator => " + locator.toString());
 				} catch (Exception ex) {
@@ -253,6 +261,7 @@ public abstract class AbstractActions extends AbstractUtils {
 	public boolean waitForVisibility(By locator) {
 		try {
 			wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+			takeScreenShotHighlightElement(getElement(locator));
 			setLog("Wait for visibility of locator => " + locator.toString());
 			return getElement(locator).isDisplayed();
 		} catch (Exception e) {
@@ -269,6 +278,7 @@ public abstract class AbstractActions extends AbstractUtils {
 	public boolean waitForVisibility(WebElement element) {
 		try {
 			wait.until(ExpectedConditions.visibilityOf(element));
+			takeScreenShotHighlightElement(element);
 			setLog("Wait for visibility of locator => " + element.toString());
 			return element.isDisplayed();
 		} catch (Exception e) {
@@ -287,6 +297,7 @@ public abstract class AbstractActions extends AbstractUtils {
 	public boolean waitForVisibility(By locator, int seconds) {
 		try {
 			wait.withTimeout(Duration.ofSeconds(seconds)).until(ExpectedConditions.visibilityOfElementLocated(locator));
+			takeScreenShotHighlightElement(getElement(locator));
 			setLog("Wait for visibility of locator => " + locator.toString());
 			return getElement(locator).isDisplayed();
 		} catch (Exception e) {
@@ -304,6 +315,7 @@ public abstract class AbstractActions extends AbstractUtils {
 	public boolean waitForVisibility(WebElement element, int seconds) {
 		try {
 			wait.withTimeout(Duration.ofSeconds(seconds)).until(ExpectedConditions.visibilityOf(element));
+			takeScreenShotHighlightElement(element);
 			setLog("Wait for visibility of element => " + getLocatorFromElement(element));
 			return element.isDisplayed();
 		} catch (Exception e) {
@@ -344,12 +356,19 @@ public abstract class AbstractActions extends AbstractUtils {
 		return element.getText();
 	}
 
+	private String screenshotPath() {
+		return getParam("reportPath");
+	}
+
 	/**
 	 * Take a screenshot of current window and save it with timestamp in screenshot
 	 * folder
 	 */
 	public void takeScreenShot() {
-		Shutterbug.shootPage(driver).withName(getTimeStamp()).save();
+		String filename = getTimeStamp();
+		Shutterbug.shootPage(driver).withName(filename).save(screenshotPath());
+		filename = filename + ".png";
+		putParam("screenshot", filename);
 	}
 
 	/**
@@ -359,7 +378,10 @@ public abstract class AbstractActions extends AbstractUtils {
 	 * @param element
 	 */
 	public void takeScreenShotHighlightElement(WebElement element) {
-		Shutterbug.shootPage(driver).highlight(element).withName(getTimeStamp()).save();
+		String filename = getTimeStamp();
+		Shutterbug.shootPage(driver).highlight(element).withName(filename).save(screenshotPath());
+		filename = filename + ".png";
+		putParam("screenshot", filename);
 	}
 
 	/**
@@ -369,7 +391,44 @@ public abstract class AbstractActions extends AbstractUtils {
 	 * @param element
 	 */
 	public void takeScreenShotElement(WebElement element) {
-		Shutterbug.shootElement(driver, element).withName(getTimeStamp()).save();
+		String filename = getTimeStamp();
+		Shutterbug.shootElement(driver, element).withName(filename).save(screenshotPath());
+		filename = filename + ".png";
+		putParam("screenshot", filename);
+	}
+
+	public void assertTrue(boolean condition) {
+		assertTrue(condition, "");
+	}
+
+	public void assertTrue(boolean condition, String msg) {
+		if (msg != null && !msg.isBlank())
+			msg = "Assertion failed";
+		try {
+			takeScreenShot();
+			Assert.assertTrue(condition, msg);
+			setLog("The assertion is ok");
+		} catch (AssertionError e) {
+			setLogError(msg);
+			throw new AssertionError(condition);
+		}
+	}
+
+	public void assertFalse(boolean condition) {
+		assertFalse(condition, "");
+	}
+
+	public void assertFalse(boolean condition, String msg) {
+		if (msg != null && !msg.isBlank())
+			msg = "Assertion failed";
+		try {
+			takeScreenShot();
+			Assert.assertFalse(condition, msg);
+			setLog("The assertion is ok");
+		} catch (AssertionError e) {
+			setLogError(msg);
+			throw new AssertionError(condition);
+		}
 	}
 
 	/**
