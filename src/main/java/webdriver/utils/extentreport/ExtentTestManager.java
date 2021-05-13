@@ -25,8 +25,5 @@ public class ExtentTestManager {
 		extentTestMap.put((int) Thread.currentThread().getId(), test);
 		return test;
 	}
-	
-	public static int lastImage() {
-		return getTest().getModel().getMedia().size() - 1;
-	}
+
 }

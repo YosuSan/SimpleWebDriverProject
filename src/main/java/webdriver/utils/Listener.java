@@ -2,7 +2,6 @@ package webdriver.utils;
 
 import static webdriver.utils.extentreport.ExtentManager.getExtentReports;
 import static webdriver.utils.extentreport.ExtentTestManager.getTest;
-import static webdriver.utils.extentreport.ExtentTestManager.lastImage;
 import static webdriver.utils.extentreport.ExtentTestManager.startTest;
 
 import java.awt.Desktop;
@@ -16,6 +15,7 @@ import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 
 import android.core.AppiumNode;
@@ -89,8 +89,7 @@ public class Listener implements ITestListener {
 			((AppiumNode) testClass).device().takeScreenShot();
 
 		String screenshot = AbstractActions.getParam("screenshot");
-		getTest().log(Status.FAIL, "Test failed",
-				getTest().addScreenCaptureFromPath(screenshot).getModel().getMedia().get(lastImage()));
+		getTest().log(Status.FAIL, "Test failed", MediaEntityBuilder.createScreenCaptureFromPath(screenshot).build());
 	}
 
 }

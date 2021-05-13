@@ -1,7 +1,6 @@
 package webdriver.utils;
 
 import static webdriver.utils.extentreport.ExtentTestManager.getTest;
-import static webdriver.utils.extentreport.ExtentTestManager.lastImage;
 
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -14,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Reporter;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
 
 /**
@@ -81,7 +81,7 @@ public abstract class AbstractUtils {
 			getTest().log(Status.PASS, action);
 		else
 			getTest().log(Status.PASS, action,
-					getTest().addScreenCaptureFromPath(getParam("screenshot")).getModel().getMedia().get(lastImage()));
+					MediaEntityBuilder.createScreenCaptureFromPath(getParam("screenshot")).build());
 		Reporter.log(action + "<br>");
 		LOG.info(action);
 		putParam("screenshot", "");
@@ -98,7 +98,7 @@ public abstract class AbstractUtils {
 			getTest().log(Status.FAIL, action);
 		else
 			getTest().log(Status.FAIL, action,
-					getTest().addScreenCaptureFromPath(getParam("screenshot")).getModel().getMedia().get(lastImage()));
+					MediaEntityBuilder.createScreenCaptureFromPath(getParam("screenshot")).build());
 		Reporter.log(action + "<br>");
 		LOG.error(action);
 		putParam("screenshot", "");
@@ -115,7 +115,7 @@ public abstract class AbstractUtils {
 			getTest().log(Status.WARNING, action);
 		else
 			getTest().log(Status.WARNING, action,
-					getTest().addScreenCaptureFromPath(getParam("screenshot")).getModel().getMedia().get(lastImage()));
+					MediaEntityBuilder.createScreenCaptureFromPath(getParam("screenshot")).build());
 		Reporter.log(action + "<br>");
 		LOG.warn(action);
 		putParam("screenshot", "");
