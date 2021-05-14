@@ -27,7 +27,7 @@ public class IFrames {
 			SeleniumCore.browser().waitForVisibility(locatorMsg, 3);
 			String msgiframe = SeleniumCore.browser().getText(locatorMsg);
 			SeleniumCore.browser().setLog("Message inside iframe => " + msgiframe);
-			SeleniumCore.browser().assertTrue(msgiframe.contains("button from iframe " + (i + 1)), "Not expected message was returned");
+			SeleniumCore.browser().assertTrue(msgiframe.contains("button from iframe " + (i + 1)), "Correct expected message");
 			SeleniumCore.browser().switchToDefaultContent();
 			SeleniumCore.browser().scrollDown();
 			SeleniumCore.browser().sleepSeconds(1);

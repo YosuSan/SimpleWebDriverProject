@@ -8,7 +8,7 @@ import java.util.Date;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
-import webdriver.utils.AbstractUtils;
+import webdriver.utils.CommonUtils;
 
 public class ExtentManager {
 	private static final ExtentReports extentReports = new ExtentReports();
@@ -17,11 +17,11 @@ public class ExtentManager {
 	public synchronized static ExtentReports getExtentReports() {
 		if (reporter == null) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss");
-			Path reportPath = Paths.get("reports", AbstractUtils.getParam("SuiteName"), dateFormat.format(new Date()));
-			AbstractUtils.putParam("reportPath", reportPath.toAbsolutePath().toString());
+			Path reportPath = Paths.get("reports", CommonUtils.getParam("SuiteName"), dateFormat.format(new Date()));
+			CommonUtils.putParam("reportPath", reportPath.toAbsolutePath().toString());
 
 			reporter = new ExtentSparkReporter(reportPath.resolve("extent-report.html").toAbsolutePath().toString());
-			reporter.config().setReportName(AbstractUtils.getParam("SuiteName"));
+			reporter.config().setReportName(CommonUtils.getParam("SuiteName"));
 			extentReports.attachReporter(reporter);
 
 			setInformation();
@@ -34,10 +34,10 @@ public class ExtentManager {
 		extentReports.setSystemInfo("Author", "Jose Sanjuan Gonzalez");
 		extentReports.setSystemInfo("Project", "Selenium and appium examples");
 		extentReports.setSystemInfo("Operative System", System.getProperty("os.name"));
-		if (AbstractUtils.getParam("browser") == null || AbstractUtils.getParam("browser").isEmpty())
+		if (CommonUtils.getParam("browser") == null || CommonUtils.getParam("browser").isEmpty())
 			extentReports.setSystemInfo("Device", "Android mobile");
 		else
-			extentReports.setSystemInfo("Browser", AbstractUtils.getParam("browser"));
+			extentReports.setSystemInfo("Browser", CommonUtils.getParam("browser"));
 	}
 
 }

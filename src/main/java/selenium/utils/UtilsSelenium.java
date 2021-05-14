@@ -11,9 +11,9 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
-import webdriver.utils.AbstractActions;
+import webdriver.utils.CommonActions;
 
-public class UtilsSelenium extends AbstractActions {
+public class UtilsSelenium extends CommonActions {
 
 	/**
 	 * Navigate to url

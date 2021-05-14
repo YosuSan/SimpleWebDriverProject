@@ -22,7 +22,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 
 import selenium.utils.UtilsSelenium;
-import webdriver.utils.AbstractUtils;
+import webdriver.utils.CommonUtils;
 import webdriver.utils.Listener;
 
 @Listeners(Listener.class)
@@ -51,7 +51,7 @@ public class SeleniumCore {
 	@BeforeSuite
 	@Parameters({ "browser" })
 	public void testParams(@Optional("chrome") String browser) {
-		AbstractUtils.putParam("browser", browser);
+		CommonUtils.putParam("browser", browser);
 	}
 
 	@BeforeSuite(alwaysRun = true, dependsOnMethods = "testParams")

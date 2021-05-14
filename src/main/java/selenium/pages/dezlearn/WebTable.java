@@ -41,7 +41,7 @@ public class WebTable {
 		SeleniumCore.browser().scrollDown();
 		SeleniumCore.browser().click(locatorButtonUpdate);
 		SeleniumCore.browser().assertTrue(SeleniumCore.browser().waitForVisibility(locatorUpdateSuccess, 5),
-				"Update error");
+				"Update correct");
 		SeleniumCore.browser().sleepSeconds(2);
 	}
 

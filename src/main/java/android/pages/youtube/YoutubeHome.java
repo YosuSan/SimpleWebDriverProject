@@ -11,9 +11,9 @@ public class YoutubeHome {
 
 	public void goCamera() {
 		AppiumNode.device().waitForVisibility(locatorCamera);
-		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorCamera), "locatorCamera couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorCamera), "locatorCamera was clicked");
 		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorVideoUpload),
-				"locatorVideoUpload couldn't be clicked\n");
+				"locatorVideoUpload  was clicked");
 	}
 
 	By locatorBiblio = By
@@ -21,7 +21,7 @@ public class YoutubeHome {
 
 	public void goLibrary() {
 		AppiumNode.device().waitForVisibility(locatorBiblio);
-		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorBiblio), "locatorBiblio couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorBiblio), "locatorBiblio was clicked");
 	}
 
 	By locatorSearchIcon = By.id("com.google.android.youtube:id/menu_item_1");
@@ -34,11 +34,11 @@ public class YoutubeHome {
 	public void searchAndPlay(String toSearch) {
 
 		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorSearchIcon),
-				"locatorSearchIcon couldn't be clicked\n");
+				"locatorSearchIcon was clicked");
 		AppiumNode.device().assertTrue(AppiumNode.device().sendKeys(locatorSearchBar, toSearch),
-				toSearch + "couldn't be sended to locatorSearchBar\n");
+				toSearch + " was sended to locatorSearchBar");
 		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorSearchResult),
-				"locatorSearchResult couldn't be clicked\n");
+				"locatorSearchResult  was clicked");
 		try {
 			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorFirstVideoResult));
 			AppiumNode.device().sleepSeconds(15);
@@ -46,7 +46,7 @@ public class YoutubeHome {
 		} catch (AssertionError e) {
 			AppiumNode.device().scrollTo(locatorFirstVideoResult);
 			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorFirstVideoResult),
-					"locatorFirstVideoResult couldn't be clicked\n");
+					"locatorFirstVideoResult was clicked");
 		}
 	}
 

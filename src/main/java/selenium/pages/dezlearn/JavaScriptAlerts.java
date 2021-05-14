@@ -20,7 +20,7 @@ public class JavaScriptAlerts {
 		String alertText = SeleniumCore.browser().alertGetText();
 		SeleniumCore.browser().setLog("Alert text => " + alertText);
 		SeleniumCore.browser().alertAccept();
-		SeleniumCore.browser().assertTrue(expectedMsg.equals(alertText), "Alert message it's different from expected");
+		SeleniumCore.browser().assertTrue(expectedMsg.equals(alertText), "Alert message it's the expected");
 		SeleniumCore.browser().sleepSeconds(1);
 	}
 
@@ -45,7 +45,7 @@ public class JavaScriptAlerts {
 			SeleniumCore.browser().alertDismiss();
 
 		SeleniumCore.browser().assertTrue(SeleniumCore.browser().waitForVisibility(locatorConfirmationMsg, 3),
-				"There aren't confirmation message");
+				"Confirmation message was showed");
 		String actionMsg = SeleniumCore.browser().getText(locatorConfirmationMsg);
 		SeleniumCore.browser().setLog("Action message => " + actionMsg);
 

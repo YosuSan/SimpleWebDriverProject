@@ -15,20 +15,20 @@ public class YoutubeCamera {
 
 	public void uploadVideo(boolean storageVideo) {
 		if (storageVideo && AppiumNode.device().click(locatorFirstVideo)) {
-			AppiumNode.device().assertTrue(storageVideo);
+			AppiumNode.device().assertTrue(storageVideo, "Storaged video was selected");
 		} else {
-			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorRec), "locatorRec couldn't be clicked\n");
+			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorRec), "locatorRec was clicked");
 			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorShutter),
 					"locatorShutter couldn't be clicked\n");
 			AppiumNode.device().sleepSeconds(10);
 			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorShutter),
 					"locatorShutter couldn't be clicked\n");
-			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorDone), "locatorDone couldn't be clicked\n");
+			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorDone), "locatorDone was clicked");
 		}
 
 		AppiumNode.device().sleepSeconds(2);
-		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorSend), "locatorSend couldn't be clicked\n");
-		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorUpload), "locatorUpload couldn't be clicked\n");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorSend), "locatorSend was clicked");
+		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorUpload), "locatorUpload was clicked");
 
 	}
 

@@ -22,7 +22,7 @@ import com.aventstack.extentreports.Status;
  * @author Jose Sanjuan Gonzalez
  *
  */
-public abstract class AbstractUtils {
+public class CommonUtils {
 
 	private static HashMap<String, String> params = new HashMap<>();
 	public final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());

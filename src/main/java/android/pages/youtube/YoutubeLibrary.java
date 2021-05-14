@@ -20,17 +20,17 @@ public class YoutubeLibrary {
 		List<WebElement> list;
 		AppiumNode.device().sleepSeconds(1);
 		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorTusVideos),
-				"locatorTusVideos couldn't be clicked\n");
+				"locatorTusVideos was clicked");
 		list = AppiumNode.device().driver().findElements(locatorVideoList);
 		int videos = list.size();
 		AppiumNode.device().waitForVisibility(locatorMenuVideos);
 		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorMenuVideos),
-				"locatorMenuVideos couldn't be clicked\n");
+				"locatorMenuVideos was clicked");
 		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorEliminar),
-				"locatorEliminar couldn't be clicked\n");
+				"locatorEliminar was clicked");
 		AppiumNode.device().waitForVisibility(locatorConfirmEliminar);
 		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorConfirmEliminar),
-				"locatorConfirmEliminar couldn't be clicked\n");
+				"locatorConfirmEliminar was clicked");
 		while (list.size() == videos) {
 			try {
 				list = AppiumNode.device().driver().findElements(locatorVideoList);
@@ -46,10 +46,10 @@ public class YoutubeLibrary {
 
 	public void confirmVideoIsUploaded() {
 		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorTusVideos),
-				"locatorTusVideos couldn't be clicked\n");
+				"locatorTusVideos was clicked");
 		try {
-			AppiumNode.device().assertTrue(AppiumNode.device().waitForVisibility(locatorReady, 40));
-			AppiumNode.device().setLog("Video was uploaded successfull");
+			AppiumNode.device().assertTrue(AppiumNode.device().waitForVisibility(locatorReady, 40),
+					"Video was uploaded successfull");
 		} catch (AssertionError e) {
 			AppiumNode.device().setLog("Can't confirm that video was uploaded");
 		}

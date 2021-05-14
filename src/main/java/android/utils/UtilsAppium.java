@@ -9,10 +9,10 @@ import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.Activity;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.touch.offset.PointOption;
-import webdriver.utils.AbstractActions;
+import webdriver.utils.CommonActions;
 
 @SuppressWarnings({ "rawtypes" })
-public class UtilsAppium extends AbstractActions {
+public class UtilsAppium extends CommonActions {
 
 	/**
 	 * Send Enter by ADB command

@@ -20,7 +20,7 @@ public class TelefonicaHome {
 	public void getAllTagsOnDomain() {
 		firstOpen();
 		List<WebElement> tags = SeleniumCore.browser().getElements(locatorTags);
-		SeleniumCore.browser().assertTrue(tags.size() > 0, "No hay tags");
+		SeleniumCore.browser().assertTrue(tags.size() > 0, "Se han encontrado tags");
 		SeleniumCore.browser().setLog("Tags list:");
 		tags.forEach(tag -> {
 			String msg = "href: " + tag.getAttribute("href");

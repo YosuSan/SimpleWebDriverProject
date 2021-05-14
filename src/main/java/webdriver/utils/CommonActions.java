@@ -24,13 +24,13 @@ import com.assertthat.selenium_shutterbug.core.Shutterbug;
  * @author Jose Sanjuan Gonzalez
  *
  */
-public abstract class AbstractActions extends AbstractUtils {
+public abstract class CommonActions extends CommonUtils {
 
 	public WebDriver driver;
 	public WebDriverWait wait;
 	private Actions action;
 
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractActions.class);
+	private static final Logger LOG = LoggerFactory.getLogger(CommonActions.class);
 
 	/**
 	 * Sleep the thread for seconds
@@ -397,36 +397,58 @@ public abstract class AbstractActions extends AbstractUtils {
 		putParam("screenshot", filename);
 	}
 
+	/**
+	 * Assert a condiction as true, if assertion fails the test will finish
+	 * 
+	 * @param condition boolean
+	 */
 	public void assertTrue(boolean condition) {
 		assertTrue(condition, "");
 	}
 
+	/**
+	 * Assert a condiction as true, if assertion fails the test will finish
+	 * 
+	 * @param condition boolean
+	 * @param msg       String information about assert
+	 */
 	public void assertTrue(boolean condition, String msg) {
-		if (msg != null && !msg.isBlank())
-			msg = "Assertion failed";
+		if (msg == null || msg.isBlank())
+			msg = "NO INFO";
 		try {
 			takeScreenShot();
 			Assert.assertTrue(condition, msg);
-			setLog("The assertion is ok");
+			setLog("The assertion is ok: " + msg);
 		} catch (AssertionError e) {
-			setLogError(msg);
+			setLogError("Assertion fail: " + msg);
 			throw new AssertionError(condition);
 		}
 	}
 
+	/**
+	 * Assert a condiction as false, if assertion fails the test will finish
+	 * 
+	 * @param condition boolean
+	 */
 	public void assertFalse(boolean condition) {
 		assertFalse(condition, "");
 	}
 
+	/**
+	 * Assert a condiction as false, if assertion fails the test will finish
+	 * 
+	 * @param condition boolean
+	 * @param msg       String information about assert
+	 */
 	public void assertFalse(boolean condition, String msg) {
-		if (msg != null && !msg.isBlank())
-			msg = "Assertion failed";
+		if (msg == null || msg.isBlank())
+			msg = "NO INFO";
 		try {
 			takeScreenShot();
 			Assert.assertFalse(condition, msg);
-			setLog("The assertion is ok");
+			setLog("The assertion is ok: " + msg);
 		} catch (AssertionError e) {
-			setLogError(msg);
+			setLogError("Assertion fail: " + msg);
 			throw new AssertionError(condition);
 		}
 	}

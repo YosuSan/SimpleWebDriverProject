@@ -29,7 +29,7 @@ public class Listener implements ITestListener {
 	@Override
 	public void onStart(ITestContext arg0) {
 		String suiteName = arg0.getCurrentXmlTest().getSuite().getName();
-		AbstractUtils.putParam("SuiteName", suiteName);
+		CommonUtils.putParam("SuiteName", suiteName);
 
 		LOG.info("*****************************************");
 		LOG.info("SuiteName: " + suiteName);
@@ -49,9 +49,9 @@ public class Listener implements ITestListener {
 		LOG.info("*****************************************");
 		LOG.info("Test Started => " + arg0.getName());
 		LOG.info("*****************************************");
-		if (AbstractUtils.getParam("SuiteName") == null || AbstractUtils.getParam("SuiteName").isEmpty()
-				|| AbstractUtils.getParam("SuiteName").equals("Default suite"))
-			AbstractUtils.putParam("SuiteName", testClass);
+		if (CommonUtils.getParam("SuiteName") == null || CommonUtils.getParam("SuiteName").isEmpty()
+				|| CommonUtils.getParam("SuiteName").equals("Default suite"))
+			CommonUtils.putParam("SuiteName", testClass);
 
 		startTest(testClass + "_" + testName, arg0.getMethod().getDescription());
 	}
@@ -68,7 +68,7 @@ public class Listener implements ITestListener {
 		if (OPEN_REPORT) {
 			try {
 				Desktop desk = Desktop.getDesktop();
-				File report = new File(AbstractUtils.getParam("reportPath") + "/extent-report.html");
+				File report = new File(CommonUtils.getParam("reportPath") + "/extent-report.html");
 				desk.open(report);
 			} catch (IOException e) {
 				LOG.error("Can't open report: " + e.getMessage());
@@ -95,7 +95,7 @@ public class Listener implements ITestListener {
 		if (testClass instanceof AppiumNode)
 			((AppiumNode) testClass).device().takeScreenShot();
 
-		String screenshot = AbstractActions.getParam("screenshot");
+		String screenshot = CommonActions.getParam("screenshot");
 		getTest().log(Status.FAIL, "Test failed", MediaEntityBuilder.createScreenCaptureFromPath(screenshot).build());
 	}
 

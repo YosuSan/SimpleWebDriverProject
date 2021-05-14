@@ -26,7 +26,7 @@ public class AmazonProductPage {
 			SeleniumCore.browser().sleepSeconds(2);
 			check = true;
 		}
-		SeleniumCore.browser().assertTrue(check);
+		SeleniumCore.browser().assertTrue(check, "Correct browse content");
 	}
 
 }

@@ -27,7 +27,7 @@ public class TestSync {
 		SeleniumCore.browser().click(locatorButtonSubmit);
 
 		SeleniumCore.browser().assertTrue(SeleniumCore.browser().waitForVisibility(locatorProcessOrder, 10),
-				"The order number didn't appear");
+				"The order number appears");
 		String order = SeleniumCore.browser().getText(locatorProcessOrder);
 		SeleniumCore.browser().setLog("<mark>" + order + "</mark>");
 
