@@ -18,8 +18,11 @@ import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 
 import selenium.utils.UtilsSelenium;
+import webdriver.utils.AbstractUtils;
 import webdriver.utils.Listener;
 
 @Listeners(Listener.class)
@@ -43,6 +46,12 @@ public class SeleniumCore {
 	 */
 	public static UtilsSelenium browser() {
 		return utils;
+	}
+	
+	@BeforeSuite
+	@Parameters({ "browser" })
+	public void testParams(@Optional("chrome") String browser) {
+		AbstractUtils.putParam("browser", browser);
 	}
 
 	@BeforeSuite(alwaysRun = true, dependsOnMethods = "testParams")

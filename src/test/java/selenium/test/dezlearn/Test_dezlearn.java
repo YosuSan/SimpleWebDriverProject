@@ -1,9 +1,6 @@
 package selenium.test.dezlearn;
 
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import selenium.core.SeleniumCore;
@@ -13,7 +10,6 @@ import selenium.pages.dezlearn.JavaScriptAlerts;
 import selenium.pages.dezlearn.MultiWindow;
 import selenium.pages.dezlearn.TestSync;
 import selenium.pages.dezlearn.WebTable;
-import webdriver.utils.AbstractUtils;
 
 public class Test_dezlearn extends SeleniumCore {
 
@@ -36,13 +32,6 @@ public class Test_dezlearn extends SeleniumCore {
 	@DataProvider(name = "users")
 	public Object[][] users() {
 		return new Object[][] { { "First Name Ej", "Last Name Ej", "correo@email.com" } };
-	}
-
-	@BeforeSuite
-	@Parameters({ "browser" })
-	public void testParams(@Optional("chrome") String browser) {
-		AbstractUtils.putParam("browser", browser);
-		AbstractUtils.putParam("SuiteName", "DezLearn");
 	}
 
 	@Test(description = "Fill all data and wait for order number", testName = "Fill data", dataProvider = "users")
@@ -80,12 +69,12 @@ public class Test_dezlearn extends SeleniumCore {
 		browser().setLog("<mark>Promt alert cancel</mark>");
 		alerts.promptAlert("Mensaje de alerta", "cancel");
 	}
-	
+
 	@Test(description = "Click on button inside iframes", testName = "Iframes example")
 	public void test05_iframesExamples() {
 		iframes.clickInIframe();
 	}
-	
+
 	@Test(description = "Click on button inside nested iframes", testName = "NestedIframes example")
 	public void test06_nestedIFramesExamples() {
 		iframesNested.clickInNestedIframes();

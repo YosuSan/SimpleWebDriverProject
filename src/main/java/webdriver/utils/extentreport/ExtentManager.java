@@ -24,14 +24,20 @@ public class ExtentManager {
 			reporter.config().setReportName(AbstractUtils.getParam("SuiteName"));
 			extentReports.attachReporter(reporter);
 
-			extentReports.setSystemInfo("Author", "Jose Sanjuan Gonzalez");
-			extentReports.setSystemInfo("Project", "Selenium and appium examples");
-			if (AbstractUtils.getParam("browser") == null || AbstractUtils.getParam("browser").isEmpty())
-				extentReports.setSystemInfo("Environment", "Android mobile");
-			else
-				extentReports.setSystemInfo("Environment", AbstractUtils.getParam("browser") + " browser");
+			setInformation();
 		}
 		return extentReports;
+	}
+
+	private static void setInformation() {
+
+		extentReports.setSystemInfo("Author", "Jose Sanjuan Gonzalez");
+		extentReports.setSystemInfo("Project", "Selenium and appium examples");
+		extentReports.setSystemInfo("Operative System", System.getProperty("os.name"));
+		if (AbstractUtils.getParam("browser") == null || AbstractUtils.getParam("browser").isEmpty())
+			extentReports.setSystemInfo("Device", "Android mobile");
+		else
+			extentReports.setSystemInfo("Browser", AbstractUtils.getParam("browser"));
 	}
 
 }

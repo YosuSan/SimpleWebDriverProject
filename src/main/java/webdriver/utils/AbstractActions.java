@@ -357,7 +357,7 @@ public abstract class AbstractActions extends AbstractUtils {
 	}
 
 	private String screenshotPath() {
-		return getParam("reportPath");
+		return getParam("reportPath") + "/screenshots/";
 	}
 
 	/**
@@ -367,7 +367,7 @@ public abstract class AbstractActions extends AbstractUtils {
 	public void takeScreenShot() {
 		String filename = getTimeStamp();
 		Shutterbug.shootPage(driver).withName(filename).save(screenshotPath());
-		filename = filename + ".png";
+		filename = "screenshots/" + filename + ".png";
 		putParam("screenshot", filename);
 	}
 
@@ -380,7 +380,7 @@ public abstract class AbstractActions extends AbstractUtils {
 	public void takeScreenShotHighlightElement(WebElement element) {
 		String filename = getTimeStamp();
 		Shutterbug.shootPage(driver).highlight(element).withName(filename).save(screenshotPath());
-		filename = filename + ".png";
+		filename = "screenshots/" + filename + ".png";
 		putParam("screenshot", filename);
 	}
 
@@ -393,7 +393,7 @@ public abstract class AbstractActions extends AbstractUtils {
 	public void takeScreenShotElement(WebElement element) {
 		String filename = getTimeStamp();
 		Shutterbug.shootElement(driver, element).withName(filename).save(screenshotPath());
-		filename = filename + ".png";
+		filename = "screenshots/" + filename + ".png";
 		putParam("screenshot", filename);
 	}
 

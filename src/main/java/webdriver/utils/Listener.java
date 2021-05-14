@@ -24,29 +24,36 @@ import selenium.core.SeleniumCore;
 public class Listener implements ITestListener {
 
 	private final Logger LOG = LoggerFactory.getLogger(Listener.class);
-	private final boolean OPEN_REPORT = true;
+	private final boolean OPEN_REPORT = false;
 
 	@Override
 	public void onStart(ITestContext arg0) {
+		String suiteName = arg0.getCurrentXmlTest().getSuite().getName();
+		AbstractUtils.putParam("SuiteName", suiteName);
 
 		LOG.info("*****************************************");
+		LOG.info("SuiteName: " + suiteName);
 		LOG.info("Start of execution suite => " + arg0.getName());
 		LOG.info("List of tests involed:");
-
 		List<ITestNGMethod> list = arg0.getSuite().getAllMethods();
 		for (ITestNGMethod it : list)
 			LOG.info("Test involved => " + it.getMethodName());
-
+		LOG.info("Browser: " + arg0.getCurrentXmlTest().getParameter("browser"));
 		LOG.info("*****************************************");
 	}
 
 	@Override
 	public void onTestStart(ITestResult arg0) {
+		String testClass = arg0.getMethod().getRealClass().getSimpleName();
+		String testName = arg0.getName();
 		LOG.info("*****************************************");
 		LOG.info("Test Started => " + arg0.getName());
 		LOG.info("*****************************************");
+		if (AbstractUtils.getParam("SuiteName") == null || AbstractUtils.getParam("SuiteName").isEmpty()
+				|| AbstractUtils.getParam("SuiteName").equals("Default suite"))
+			AbstractUtils.putParam("SuiteName", testClass);
 
-		startTest(arg0.getName(), arg0.getMethod().getDescription());
+		startTest(testClass + "_" + testName, arg0.getMethod().getDescription());
 	}
 
 	@Override
