@@ -61,7 +61,6 @@ public class WebTable {
 		String typeSelected = SeleniumCore.browser().selectInSelectByIndex(actualRow.findElement(locatorType),
 				randomDecision(5));
 		SeleniumCore.browser().sendKeys(actualRow.findElement(locatorComments), comment);
-		System.out.println(actualRow.findElement(locatorComments));
 
 		SeleniumCore.browser().setLog("*************** ROW *******************");
 		SeleniumCore.browser().setLog("Usuario: " + user);

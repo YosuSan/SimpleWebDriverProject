@@ -39,10 +39,9 @@ public class UtilsSelenium extends CommonActions {
 	 * @return true if clicked, false if can't perform the click
 	 */
 	public boolean clickJScript(By locator) {
-		WebElement el = driver.findElement(locator);
 		boolean clicked = false;
 		try {
-			jsExecuteScript("arguments[0].click()", el);
+			jsExecuteScript("arguments[0].click()", getElement(locator));
 			clicked = true;
 			setLog("Click on locator => " + locator.toString());
 		} catch (Exception e) {
@@ -58,17 +57,11 @@ public class UtilsSelenium extends CommonActions {
 	 * @return true if sended, false if can't perform it
 	 */
 	public boolean sendEnter(By locator) {
-		int time = 0;
-		sleepMillis(200);
 		boolean send = false;
-		while (time++ < 10 && !send) {
-			try {
-				driver.findElement(locator).sendKeys(Keys.ENTER);
-				send = true;
-				setLog("Send 'Key Enter' into locator => " + locator.toString());
-			} catch (Exception e) {
-				sleepMillis(200);
-			}
+		if (waitForVisibility(locator)) {
+			driver.findElement(locator).sendKeys(Keys.ENTER);
+			send = true;
+			setLog("Send 'Key Enter' into locator => " + locator.toString());
 		}
 		return send;
 	}
@@ -77,10 +70,9 @@ public class UtilsSelenium extends CommonActions {
 	 * Scroll to locator view
 	 */
 	public boolean scrollTo(By locator) {
-		WebElement el = driver.findElement(locator);
 		boolean finded = false;
 		try {
-			jsExecuteScript("arguments[0].scrollIntoView(true);", el);
+			jsExecuteScript("arguments[0].scrollIntoView(true);", getElement(locator));
 			finded = true;
 			setLog("Scroll to locator => " + locator.toString());
 		} catch (Exception e) {
@@ -166,19 +158,20 @@ public class UtilsSelenium extends CommonActions {
 	 * @param locator  of Select element
 	 * @param toSelect
 	 */
-	public void selectInSelectByText(By locator, String toSelect) {
+	public boolean selectInSelectByText(By locator, String toSelect) {
 		toSelect = toSelect.trim().replaceAll(" ", "").toLowerCase();
 		Select select = new Select(getElement(locator));
 		List<WebElement> lista = select.getOptions();
-		boolean encontrado = false;
-		for (int i = 0; i < lista.size() && !encontrado; i++) {
+		boolean found = false;
+		for (int i = 0; i < lista.size() && !found; i++) {
 			String actual = lista.get(i).getText().replaceAll(" ", "").toLowerCase().trim();
 			if (actual.equals(toSelect)) {
 				select.selectByVisibleText(lista.get(i).getText());
 				setLog("Set => '" + toSelect + "', into select field locator => " + locator.toString());
-				encontrado = true;
+				found = true;
 			}
 		}
+		return found;
 	}
 
 	/**
@@ -187,21 +180,22 @@ public class UtilsSelenium extends CommonActions {
 	 * @param locator  of Select element
 	 * @param toSelect
 	 */
-	public void selectInSelectByParcialText(By locator, String toSelect) {
+	public boolean selectInSelectByParcialText(By locator, String toSelect) {
 		toSelect = toSelect.trim().replaceAll(" ", "").toLowerCase();
 		Select select = new Select(getElement(locator));
 		List<WebElement> lista = select.getOptions();
-		boolean encontrado = false;
-		for (int i = 0; i < lista.size() && !encontrado; i++) {
+		boolean found = false;
+		for (int i = 0; i < lista.size() && !found; i++) {
 			String actual = lista.get(i).getText().replaceAll(" ", "").toLowerCase().trim();
 			if (actual.contains(toSelect)) {
 				select.selectByVisibleText(lista.get(i).getText());
 				setLog("Set => '" + toSelect + "', into select field locator => " + locator.toString());
-				encontrado = true;
+				found = true;
 			}
 		}
+		return found;
 	}
-	
+
 	/**
 	 * Set index value in select element
 	 * 
@@ -215,7 +209,7 @@ public class UtilsSelenium extends CommonActions {
 		setLog("Set => '" + value + "', into select field locator => " + locator.toString());
 		return value;
 	}
-	
+
 	/**
 	 * Set index value in select element
 	 * 
@@ -229,28 +223,32 @@ public class UtilsSelenium extends CommonActions {
 		setLog("Set => '" + value + "', into select field element => " + element.toString());
 		return value;
 	}
-	
+
 	public Set<String> getWindows() {
 		return driver.getWindowHandles();
 	}
 
-	public void switchWindowFromMain() {
-		String main = driver.getWindowHandle();
-		if (getParam("mainWindow") == null || getParam("mainWindow").isEmpty())
+	public void saveMainWindow() {
+		if (getParam("mainWindow") == null || getParam("mainWindow").isEmpty()) {
+			String main = driver.getWindowHandle();
 			putParam("mainWindow", main);
+		}
+	}
+
+	public void switchWindowFromMain() {
 		Set<String> windows = driver.getWindowHandles();
-		String newWindow = windows.stream().filter(x -> !x.equals(main)).findFirst().get();
+		String newWindow = windows.stream().filter(x -> !x.equals(getParam("mainWindow"))).findFirst().get();
 		driver.switchTo().window(newWindow);
 	}
-	
+
 	public void switchToMainWindow() {
 		driver.switchTo().window(getParam("mainWindow"));
 	}
-	
+
 	public Alert getAlert() {
 		return driver.switchTo().alert();
 	}
-	
+
 	public boolean isAlert() {
 		try {
 			getAlert();
@@ -259,45 +257,45 @@ public class UtilsSelenium extends CommonActions {
 		}
 		return true;
 	}
-	
+
 	public String alertGetText() {
 		return getAlert().getText();
 	}
-	
+
 	public void alertAccept() {
 		setLog("Accept alert");
 		getAlert().accept();
 	}
-	
+
 	public void alertDismiss() {
 		setLog("Cancel alert");
 		getAlert().dismiss();
 	}
-	
+
 	public void alertSendKeys(String keys) {
 		setLog("Enter => '" + keys + "', into alert");
 		getAlert().sendKeys(keys);
 	}
-	
+
 	public void switchToDefaultContent() {
 		setLog("Switch driver to default content");
 		driver.switchTo().defaultContent();
 	}
-	
+
 	public void switchToIFrame(WebElement element) {
 		setLog("Switch driver to iframe element => " + element.toString());
 		driver.switchTo().frame(element);
 	}
-	
+
 	public void switchToIFrame(By locator) {
 		switchToIFrame(getElement(locator));
 	}
-	
+
 	public void switchToIFrame(String nameOrId) {
 		setLog("Switch driver to iframe with id or name => " + nameOrId);
 		driver.switchTo().frame(nameOrId);
 	}
-	
+
 	public void switchToIFrame(int index) {
 		setLog("Switch driver to iframe index => " + index);
 		driver.switchTo().frame(index);

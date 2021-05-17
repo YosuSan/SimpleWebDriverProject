@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -117,16 +116,12 @@ public abstract class CommonActions extends CommonUtils {
 	 * @return boolean of successful
 	 */
 	public boolean click(By locator) {
-		int time = 0;
-		while (time++ < 40) {
-			try {
-				takeScreenShotHighlightElement(getElement(locator));
-				getElement(locator).click();
-				setLog("Click on locator => " + locator.toString());
-				return true;
-			} catch (NoSuchElementException e) {
-				sleepMillis(200);
-			}
+
+		if (waitForVisibility(locator)) {
+			takeScreenShotHighlightElement(getElement(locator));
+			getElement(locator).click();
+			setLog("Click on locator => " + locator.toString());
+			return true;
 		}
 		return false;
 	}
@@ -138,16 +133,12 @@ public abstract class CommonActions extends CommonUtils {
 	 * @return boolean of successful
 	 */
 	public boolean click(WebElement element) {
-		int time = 0;
-		while (time++ < 40) {
-			try {
-				element.click();
-				takeScreenShotHighlightElement(element);
-				setLog("Click on locator => " + getLocatorFromElement(element));
-				return true;
-			} catch (Exception e) {
-				sleepMillis(200);
-			}
+
+		if (waitForVisibility(element)) {
+			takeScreenShotHighlightElement(element);
+			element.click();
+			setLog("Click on locator => " + getLocatorFromElement(element));
+			return true;
 		}
 		return false;
 	}
@@ -160,6 +151,7 @@ public abstract class CommonActions extends CommonUtils {
 	 * @return boolean of successful
 	 */
 	public boolean clickAndHold(By locator, int seconds) {
+
 		if (waitForVisibility(locator)) {
 			getActions().clickAndHold(getElement(locator)).pause(Duration.ofSeconds(seconds)).release().build()
 					.perform();
@@ -177,17 +169,13 @@ public abstract class CommonActions extends CommonUtils {
 	 * @return true if cleared, false if can't perform it
 	 */
 	public boolean clear(By locator) {
-		int time = 0;
+
 		boolean cleared = false;
-		while (time++ < 10 && !cleared) {
-			try {
-				getElement(locator).clear();
-				takeScreenShotHighlightElement(getElement(locator));
-				cleared = true;
-				setLog("Clear the text in locator => " + locator.toString());
-			} catch (Exception e) {
-				sleepMillis(200);
-			}
+		if (waitForVisibility(locator)) {
+			getElement(locator).clear();
+			takeScreenShotHighlightElement(getElement(locator));
+			cleared = true;
+			setLog("Clear the text in locator => " + locator.toString());
 		}
 		return cleared;
 	}
@@ -211,16 +199,12 @@ public abstract class CommonActions extends CommonUtils {
 	 * @return boolean of successful
 	 */
 	public boolean sendKeys(WebElement element, String args) {
-		int time = 0;
-		while (time++ < 40) {
-			try {
-				element.sendKeys(args);
-				takeScreenShotHighlightElement(element);
-				setLog("Enter => '" + args + "', into locator => " + getLocatorFromElement(element));
-				return true;
-			} catch (Exception e) {
-				sleepMillis(200);
-			}
+
+		if (waitForVisibility(element)) {
+			element.sendKeys(args);
+			takeScreenShotHighlightElement(element);
+			setLog("Enter => '" + args + "', into locator => " + getLocatorFromElement(element));
+			return true;
 		}
 		return false;
 	}
@@ -233,21 +217,15 @@ public abstract class CommonActions extends CommonUtils {
 	 * @return boolean of successful
 	 */
 	public boolean sendPassword(By locator, String password) {
-		int time = 0;
-		while (time++ < 40) {
+		if (waitForVisibility(locator)) {
+			getElement(locator).sendKeys(password);
 			try {
-				getElement(locator).sendKeys(password);
 				takeScreenShotHighlightElement(getElement(locator));
-				try {
-					setLog("Enter => 'the password', into locator => " + locator.toString());
-				} catch (Exception ex) {
-					setLog("Enter => 'the password', into locator => " + locator.toString());
-					return true;
-				}
-				return true;
-			} catch (Exception e) {
-				sleepMillis(200);
+				setLog("Enter => 'the password', into locator => " + locator.toString());
+			} catch (Exception ex) {
+				setLog("Enter => 'the password', into locator => " + locator.toString());
 			}
+			return true;
 		}
 		return false;
 	}
@@ -261,8 +239,6 @@ public abstract class CommonActions extends CommonUtils {
 	public boolean waitForVisibility(By locator) {
 		try {
 			wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-			takeScreenShotHighlightElement(getElement(locator));
-			setLog("Wait for visibility of locator => " + locator.toString());
 			return getElement(locator).isDisplayed();
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
@@ -278,8 +254,6 @@ public abstract class CommonActions extends CommonUtils {
 	public boolean waitForVisibility(WebElement element) {
 		try {
 			wait.until(ExpectedConditions.visibilityOf(element));
-			takeScreenShotHighlightElement(element);
-			setLog("Wait for visibility of locator => " + element.toString());
 			return element.isDisplayed();
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
@@ -297,8 +271,6 @@ public abstract class CommonActions extends CommonUtils {
 	public boolean waitForVisibility(By locator, int seconds) {
 		try {
 			wait.withTimeout(Duration.ofSeconds(seconds)).until(ExpectedConditions.visibilityOfElementLocated(locator));
-			takeScreenShotHighlightElement(getElement(locator));
-			setLog("Wait for visibility of locator => " + locator.toString());
 			return getElement(locator).isDisplayed();
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
@@ -315,8 +287,6 @@ public abstract class CommonActions extends CommonUtils {
 	public boolean waitForVisibility(WebElement element, int seconds) {
 		try {
 			wait.withTimeout(Duration.ofSeconds(seconds)).until(ExpectedConditions.visibilityOf(element));
-			takeScreenShotHighlightElement(element);
-			setLog("Wait for visibility of element => " + getLocatorFromElement(element));
 			return element.isDisplayed();
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
@@ -345,6 +315,7 @@ public abstract class CommonActions extends CommonUtils {
 	 * @return text inside locator
 	 */
 	public String getText(By locator) {
+		waitForVisibility(locator);
 		return getElement(locator).getText();
 	}
 
@@ -353,6 +324,7 @@ public abstract class CommonActions extends CommonUtils {
 	 * @return text inside web element
 	 */
 	public String getText(WebElement element) {
+		waitForVisibility(element);
 		return element.getText();
 	}
 

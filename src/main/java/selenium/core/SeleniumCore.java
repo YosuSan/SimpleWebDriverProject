@@ -35,7 +35,6 @@ import webdriver.utils.Listener;
 public class SeleniumCore {
 
 	private int port = 4567;
-	private static boolean closeAllChromeDrivers = false;
 	private static UtilsSelenium utils = new UtilsSelenium();
 	private static final String DRIVERS_PATH = "lib/drivers/";
 
@@ -47,7 +46,7 @@ public class SeleniumCore {
 	public static UtilsSelenium browser() {
 		return utils;
 	}
-	
+
 	@BeforeSuite
 	@Parameters({ "browser" })
 	public void testParams(@Optional("chrome") String browser) {
@@ -106,6 +105,8 @@ public class SeleniumCore {
 
 		browser().wait = new WebDriverWait(browser().driver, 10);
 		browser().driver.manage().window().maximize();
+		CommonUtils.putParam("mainWindow", "");
+		browser().saveMainWindow();
 	}
 
 	@AfterSuite(alwaysRun = true)
@@ -116,15 +117,13 @@ public class SeleniumCore {
 			socket.close();
 		} catch (IOException e) {
 			e.getMessage();
-//			running = true;
 		} finally {
 			socket = null;
 		}
 		browser().driver.quit();
 		browser().driver = null;
 		browser().clearParams();
-		if (closeAllChromeDrivers)
-			browser().sendScript("taskkill /IM chromed* /F");
+
 		LOG.info("The port is busy => " + browser().checkIfPortIsBusy(port));
 		port = 4567;
 	}
