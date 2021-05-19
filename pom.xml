@@ -139,9 +139,7 @@
 
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>testng-chrome.xml</suiteXmlFile>
-						<suiteXmlFile>testng-firefox.xml</suiteXmlFile>
-						<suiteXmlFile>testng-edge.xml</suiteXmlFile>
+						<suiteXmlFile>XML_files/testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 

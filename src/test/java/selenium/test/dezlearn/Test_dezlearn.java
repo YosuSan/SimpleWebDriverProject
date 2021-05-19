@@ -54,19 +54,19 @@ public class Test_dezlearn extends SeleniumCore {
 
 	@Test(description = "Manage all alerts types", testName = "Alerts")
 	public void test04_workingWithAlerts() {
-		browser().setLog("<mark>Simple alert</mark>");
+		browser().setLogInfo("<mark>Simple alert</mark>");
 		alerts.simpleAlert();
 
-		browser().setLog("<mark>Confirm alert accept</mark>");
+		browser().setLogInfo("<mark>Confirm alert accept</mark>");
 		alerts.confirmationManagement("accept");
 
-		browser().setLog("<mark>Confirm alert cancel</mark>");
+		browser().setLogInfo("<mark>Confirm alert cancel</mark>");
 		alerts.confirmationManagement("cancel");
 
-		browser().setLog("<mark>Promt alert accept</mark>");
+		browser().setLogInfo("<mark>Promt alert accept</mark>");
 		alerts.promptAlert("Mensaje de alerta", "accept");
 
-		browser().setLog("<mark>Promt alert cancel</mark>");
+		browser().setLogInfo("<mark>Promt alert cancel</mark>");
 		alerts.promptAlert("Mensaje de alerta", "cancel");
 	}
 

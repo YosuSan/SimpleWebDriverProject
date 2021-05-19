@@ -23,14 +23,14 @@ public class IFramesNested {
 		SeleniumCore.browser().switchToIFrame(locatorParentIframe);
 		SeleniumCore.browser().click(locatorParentButton);
 		String parentMsg = SeleniumCore.browser().getText(locatorParentMsg);
-		SeleniumCore.browser().setLog("Message inside parent iframe => " + parentMsg);
+		SeleniumCore.browser().setLogInfo("Message inside parent iframe => " + parentMsg);
 		SeleniumCore.browser().assertTrue(parentMsg.contains("iframe 1"), "Correct expected message");
 		SeleniumCore.browser().sleepSeconds(2);
 
 		SeleniumCore.browser().switchToIFrame(locatorNestedIframe);
 		SeleniumCore.browser().click(locatorNestedButton);
 		String nestedtMsg = SeleniumCore.browser().getText(locatorNestedMsg);
-		SeleniumCore.browser().setLog("Message inside nested iframe => " + nestedtMsg);
+		SeleniumCore.browser().setLogInfo("Message inside nested iframe => " + nestedtMsg);
 		SeleniumCore.browser().assertTrue(nestedtMsg.contains("iframe 2"), "Correct expected message");
 		SeleniumCore.browser().sleepSeconds(2);
 	}

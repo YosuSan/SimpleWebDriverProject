@@ -76,7 +76,24 @@ public class CommonUtils {
 	 * @param action
 	 * @return
 	 */
-	public void setLog(String action) {
+	public void setLogInfo(String action) {
+		if (getParam("screenshot") == null || getParam("screenshot").isEmpty())
+			getTest().log(Status.INFO, action);
+		else
+			getTest().log(Status.INFO, action,
+					MediaEntityBuilder.createScreenCaptureFromPath(getParam("screenshot")).build());
+		Reporter.log(action + "<br>");
+		LOG.info(action);
+		putParam("screenshot", "");
+	}
+	
+	/**
+	 * Set new line into log info with the last screen capture
+	 * 
+	 * @param action
+	 * @return
+	 */
+	public void setLogPass(String action) {
 		if (getParam("screenshot") == null || getParam("screenshot").isEmpty())
 			getTest().log(Status.PASS, action);
 		else

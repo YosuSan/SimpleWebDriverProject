@@ -22,9 +22,9 @@ public class MultiWindow {
 
 		while (SeleniumCore.browser().getWindows().size() > 1) {
 			SeleniumCore.browser().switchWindowFromMain();
-			SeleniumCore.browser().setLog("Switched to window => " + SeleniumCore.browser().driver().getWindowHandle());
+			SeleniumCore.browser().setLogInfo("Switched to window => " + SeleniumCore.browser().driver().getWindowHandle());
 			String currentUrl = SeleniumCore.browser().driver().getCurrentUrl();
-			SeleniumCore.browser().setLog("New tab in url '" + currentUrl + "' will be closed in 1 seconds");
+			SeleniumCore.browser().setLogInfo("New tab in url '" + currentUrl + "' will be closed in 1 seconds");
 			SeleniumCore.browser().sleepSeconds(1);
 			SeleniumCore.browser().driver().close();
 			SeleniumCore.browser().switchToMainWindow();

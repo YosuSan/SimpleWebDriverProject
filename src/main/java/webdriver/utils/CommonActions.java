@@ -120,7 +120,7 @@ public abstract class CommonActions extends CommonUtils {
 		if (waitForVisibility(locator)) {
 			takeScreenShotHighlightElement(getElement(locator));
 			getElement(locator).click();
-			setLog("Click on locator => " + locator.toString());
+			setLogInfo("Click on locator => " + locator.toString());
 			return true;
 		}
 		return false;
@@ -137,7 +137,7 @@ public abstract class CommonActions extends CommonUtils {
 		if (waitForVisibility(element)) {
 			takeScreenShotHighlightElement(element);
 			element.click();
-			setLog("Click on locator => " + getLocatorFromElement(element));
+			setLogInfo("Click on locator => " + getLocatorFromElement(element));
 			return true;
 		}
 		return false;
@@ -156,7 +156,7 @@ public abstract class CommonActions extends CommonUtils {
 			getActions().clickAndHold(getElement(locator)).pause(Duration.ofSeconds(seconds)).release().build()
 					.perform();
 			takeScreenShotHighlightElement(getElement(locator));
-			setLog("Click and hold on locator => '" + locator.toString() + "' for " + seconds + " seconds");
+			setLogInfo("Click and hold on locator => '" + locator.toString() + "' for " + seconds + " seconds");
 			return true;
 		}
 		return false;
@@ -175,7 +175,7 @@ public abstract class CommonActions extends CommonUtils {
 			getElement(locator).clear();
 			takeScreenShotHighlightElement(getElement(locator));
 			cleared = true;
-			setLog("Clear the text in locator => " + locator.toString());
+			setLogInfo("Clear the text in locator => " + locator.toString());
 		}
 		return cleared;
 	}
@@ -203,7 +203,7 @@ public abstract class CommonActions extends CommonUtils {
 		if (waitForVisibility(element)) {
 			element.sendKeys(args);
 			takeScreenShotHighlightElement(element);
-			setLog("Enter => '" + args + "', into locator => " + getLocatorFromElement(element));
+			setLogInfo("Enter => '" + args + "', into locator => " + getLocatorFromElement(element));
 			return true;
 		}
 		return false;
@@ -221,9 +221,9 @@ public abstract class CommonActions extends CommonUtils {
 			getElement(locator).sendKeys(password);
 			try {
 				takeScreenShotHighlightElement(getElement(locator));
-				setLog("Enter => 'the password', into locator => " + locator.toString());
+				setLogInfo("Enter => 'the password', into locator => " + locator.toString());
 			} catch (Exception ex) {
-				setLog("Enter => 'the password', into locator => " + locator.toString());
+				setLogInfo("Enter => 'the password', into locator => " + locator.toString());
 			}
 			return true;
 		}
@@ -390,7 +390,7 @@ public abstract class CommonActions extends CommonUtils {
 		try {
 			takeScreenShot();
 			Assert.assertTrue(condition, msg);
-			setLog("The assertion is ok: " + msg);
+			setLogPass("The assertion is ok: " + msg);
 		} catch (AssertionError e) {
 			setLogError("Assertion fail: " + msg);
 			throw new AssertionError(condition);
@@ -418,7 +418,7 @@ public abstract class CommonActions extends CommonUtils {
 		try {
 			takeScreenShot();
 			Assert.assertFalse(condition, msg);
-			setLog("The assertion is ok: " + msg);
+			setLogPass("The assertion is ok: " + msg);
 		} catch (AssertionError e) {
 			setLogError("Assertion fail: " + msg);
 			throw new AssertionError(condition);

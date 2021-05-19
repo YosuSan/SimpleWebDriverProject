@@ -69,7 +69,7 @@ public class UtilsAppium extends CommonActions {
 			while (!waitForVisibility(locator, 3)) {
 				scrollDown();
 			}
-			setLog("Scroll to locator => " + locator.toString());
+			setLogInfo("Scroll to locator => " + locator.toString());
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -81,7 +81,7 @@ public class UtilsAppium extends CommonActions {
 			while (!waitForVisibility(element, 3)) {
 				scrollDown();
 			}
-			setLog("Scroll to element => " + element.toString());
+			setLogInfo("Scroll to element => " + element.toString());
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -94,7 +94,7 @@ public class UtilsAppium extends CommonActions {
 	public boolean scrollDown() {
 		try {
 			scrollDirection("down");
-			setLog("Scroll down");
+			setLogInfo("Scroll down");
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -107,7 +107,7 @@ public class UtilsAppium extends CommonActions {
 	public boolean scrollUp() {
 		try {
 			scrollDirection("up");
-			setLog("Scroll up");
+			setLogInfo("Scroll up");
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -120,7 +120,7 @@ public class UtilsAppium extends CommonActions {
 	public boolean scrollRight() {
 		try {
 			scrollDirection("right");
-			setLog("Scroll right");
+			setLogInfo("Scroll right");
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -133,7 +133,7 @@ public class UtilsAppium extends CommonActions {
 	public boolean scrollLeft() {
 		try {
 			scrollDirection("left");
-			setLog("Scroll left");
+			setLogInfo("Scroll left");
 			return true;
 		} catch (Exception e) {
 			return false;

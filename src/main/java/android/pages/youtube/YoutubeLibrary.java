@@ -51,7 +51,7 @@ public class YoutubeLibrary {
 			AppiumNode.device().assertTrue(AppiumNode.device().waitForVisibility(locatorReady, 40),
 					"Video was uploaded successfull");
 		} catch (AssertionError e) {
-			AppiumNode.device().setLog("Can't confirm that video was uploaded");
+			AppiumNode.device().setLogInfo("Can't confirm that video was uploaded");
 		}
 	}
 }

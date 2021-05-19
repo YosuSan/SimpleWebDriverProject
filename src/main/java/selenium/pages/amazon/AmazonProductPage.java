@@ -17,7 +17,7 @@ public class AmazonProductPage {
 			try {
 				SeleniumCore.browser().selectInSelectByText(locatorQuantity, quantity);
 			} catch (Exception e) {
-				SeleniumCore.browser().setLog("Can't select quantity");
+				SeleniumCore.browser().setLogInfo("Can't select quantity");
 			}
 			for (int i = 0; i < 8; i++) {
 				SeleniumCore.browser().scrollDown();

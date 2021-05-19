@@ -29,7 +29,7 @@ public class TestSync {
 		SeleniumCore.browser().assertTrue(SeleniumCore.browser().waitForVisibility(locatorProcessOrder, 10),
 				"The order number appears");
 		String order = SeleniumCore.browser().getText(locatorProcessOrder);
-		SeleniumCore.browser().setLog("<mark>" + order + "</mark>");
+		SeleniumCore.browser().setLogInfo("<mark>" + order + "</mark>");
 
 	}
 

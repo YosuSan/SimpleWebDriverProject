@@ -42,7 +42,7 @@ public class YoutubeHome {
 		try {
 			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorFirstVideoResult));
 			AppiumNode.device().sleepSeconds(15);
-			AppiumNode.device().setLog("Video is playing");
+			AppiumNode.device().setLogInfo("Video is playing");
 		} catch (AssertionError e) {
 			AppiumNode.device().scrollTo(locatorFirstVideoResult);
 			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorFirstVideoResult),

@@ -43,7 +43,7 @@ public class UtilsSelenium extends CommonActions {
 		try {
 			jsExecuteScript("arguments[0].click()", getElement(locator));
 			clicked = true;
-			setLog("Click on locator => " + locator.toString());
+			setLogInfo("Click on locator => " + locator.toString());
 		} catch (Exception e) {
 			e.getMessage();
 		}
@@ -61,7 +61,7 @@ public class UtilsSelenium extends CommonActions {
 		if (waitForVisibility(locator)) {
 			driver.findElement(locator).sendKeys(Keys.ENTER);
 			send = true;
-			setLog("Send 'Key Enter' into locator => " + locator.toString());
+			setLogInfo("Send 'Key Enter' into locator => " + locator.toString());
 		}
 		return send;
 	}
@@ -74,7 +74,7 @@ public class UtilsSelenium extends CommonActions {
 		try {
 			jsExecuteScript("arguments[0].scrollIntoView(true);", getElement(locator));
 			finded = true;
-			setLog("Scroll to locator => " + locator.toString());
+			setLogInfo("Scroll to locator => " + locator.toString());
 		} catch (Exception e) {
 			e.getMessage();
 		}
@@ -89,7 +89,7 @@ public class UtilsSelenium extends CommonActions {
 		try {
 			jsExecuteScript("arguments[0].scrollIntoView(true);", element);
 			finded = true;
-			setLog("Scroll to element => " + element.toString());
+			setLogInfo("Scroll to element => " + element.toString());
 		} catch (Exception e) {
 			e.getMessage();
 		}
@@ -117,7 +117,7 @@ public class UtilsSelenium extends CommonActions {
 		try {
 			jsExecuteScript("window.scrollBy(0, " + pixels + ")");
 			success = true;
-			setLog("Scroll down");
+			setLogInfo("Scroll down");
 		} catch (Exception e) {
 			return false;
 		}
@@ -145,7 +145,7 @@ public class UtilsSelenium extends CommonActions {
 		try {
 			jsExecuteScript("window.scrollBy(0, -" + pixels + ")");
 			success = true;
-			setLog("Scroll up");
+			setLogInfo("Scroll up");
 		} catch (Exception e) {
 			return false;
 		}
@@ -167,7 +167,7 @@ public class UtilsSelenium extends CommonActions {
 			String actual = lista.get(i).getText().replaceAll(" ", "").toLowerCase().trim();
 			if (actual.equals(toSelect)) {
 				select.selectByVisibleText(lista.get(i).getText());
-				setLog("Set => '" + toSelect + "', into select field locator => " + locator.toString());
+				setLogInfo("Set => '" + toSelect + "', into select field locator => " + locator.toString());
 				found = true;
 			}
 		}
@@ -189,7 +189,7 @@ public class UtilsSelenium extends CommonActions {
 			String actual = lista.get(i).getText().replaceAll(" ", "").toLowerCase().trim();
 			if (actual.contains(toSelect)) {
 				select.selectByVisibleText(lista.get(i).getText());
-				setLog("Set => '" + toSelect + "', into select field locator => " + locator.toString());
+				setLogInfo("Set => '" + toSelect + "', into select field locator => " + locator.toString());
 				found = true;
 			}
 		}
@@ -206,7 +206,7 @@ public class UtilsSelenium extends CommonActions {
 		Select select = new Select(getElement(locator));
 		select.selectByIndex(index);
 		String value = select.getOptions().get(index).getText();
-		setLog("Set => '" + value + "', into select field locator => " + locator.toString());
+		setLogInfo("Set => '" + value + "', into select field locator => " + locator.toString());
 		return value;
 	}
 
@@ -220,7 +220,7 @@ public class UtilsSelenium extends CommonActions {
 		Select select = new Select(element);
 		select.selectByIndex(index);
 		String value = select.getOptions().get(index).getText();
-		setLog("Set => '" + value + "', into select field element => " + element.toString());
+		setLogInfo("Set => '" + value + "', into select field element => " + element.toString());
 		return value;
 	}
 
@@ -263,27 +263,27 @@ public class UtilsSelenium extends CommonActions {
 	}
 
 	public void alertAccept() {
-		setLog("Accept alert");
+		setLogInfo("Accept alert");
 		getAlert().accept();
 	}
 
 	public void alertDismiss() {
-		setLog("Cancel alert");
+		setLogInfo("Cancel alert");
 		getAlert().dismiss();
 	}
 
 	public void alertSendKeys(String keys) {
-		setLog("Enter => '" + keys + "', into alert");
+		setLogInfo("Enter => '" + keys + "', into alert");
 		getAlert().sendKeys(keys);
 	}
 
 	public void switchToDefaultContent() {
-		setLog("Switch driver to default content");
+		setLogInfo("Switch driver to default content");
 		driver.switchTo().defaultContent();
 	}
 
 	public void switchToIFrame(WebElement element) {
-		setLog("Switch driver to iframe element => " + element.toString());
+		setLogInfo("Switch driver to iframe element => " + element.toString());
 		driver.switchTo().frame(element);
 	}
 
@@ -292,12 +292,12 @@ public class UtilsSelenium extends CommonActions {
 	}
 
 	public void switchToIFrame(String nameOrId) {
-		setLog("Switch driver to iframe with id or name => " + nameOrId);
+		setLogInfo("Switch driver to iframe with id or name => " + nameOrId);
 		driver.switchTo().frame(nameOrId);
 	}
 
 	public void switchToIFrame(int index) {
-		setLog("Switch driver to iframe index => " + index);
+		setLogInfo("Switch driver to iframe index => " + index);
 		driver.switchTo().frame(index);
 	}
 

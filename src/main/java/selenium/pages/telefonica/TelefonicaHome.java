@@ -21,10 +21,10 @@ public class TelefonicaHome {
 		firstOpen();
 		List<WebElement> tags = SeleniumCore.browser().getElements(locatorTags);
 		SeleniumCore.browser().assertTrue(tags.size() > 0, "Se han encontrado tags");
-		SeleniumCore.browser().setLog("Tags list:");
+		SeleniumCore.browser().setLogInfo("Tags list:");
 		tags.forEach(tag -> {
 			String msg = "href: " + tag.getAttribute("href");
-			SeleniumCore.browser().setLog(msg);
+			SeleniumCore.browser().setLogInfo(msg);
 		});
 	}
 

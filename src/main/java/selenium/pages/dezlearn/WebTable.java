@@ -33,7 +33,7 @@ public class WebTable {
 	public void fillAllDataTableAndUpdate() {
 		goPage();
 		List<WebElement> rows = SeleniumCore.browser().getElements(locatorRows);
-		SeleniumCore.browser().setLog("Table have " + rows.size() + " editables rows");
+		SeleniumCore.browser().setLogInfo("Table have " + rows.size() + " editables rows");
 
 		for (int i = 1; i < rows.size(); i++)
 			fillData(rows.get(i));
@@ -62,14 +62,14 @@ public class WebTable {
 				randomDecision(5));
 		SeleniumCore.browser().sendKeys(actualRow.findElement(locatorComments), comment);
 
-		SeleniumCore.browser().setLog("*************** ROW *******************");
-		SeleniumCore.browser().setLog("Usuario: " + user);
-		SeleniumCore.browser().setLog("Email: " + email);
-		SeleniumCore.browser().setLog("Standard: " + standard);
-		SeleniumCore.browser().setLog("Premium: " + premium);
-		SeleniumCore.browser().setLog("Type: " + typeSelected);
-		SeleniumCore.browser().setLog("Comments: " + comment);
-		SeleniumCore.browser().setLog("******************************************");
+		SeleniumCore.browser().setLogInfo("*************** ROW *******************");
+		SeleniumCore.browser().setLogInfo("Usuario: " + user);
+		SeleniumCore.browser().setLogInfo("Email: " + email);
+		SeleniumCore.browser().setLogInfo("Standard: " + standard);
+		SeleniumCore.browser().setLogInfo("Premium: " + premium);
+		SeleniumCore.browser().setLogInfo("Type: " + typeSelected);
+		SeleniumCore.browser().setLogInfo("Comments: " + comment);
+		SeleniumCore.browser().setLogInfo("******************************************");
 		SeleniumCore.browser().sleepSeconds(2);
 	}
 

@@ -18,7 +18,7 @@ public class JavaScriptAlerts {
 		String expectedMsg = "A test alert message from Dezlearn";
 		SeleniumCore.browser().click(locatorSimpleAlert);
 		String alertText = SeleniumCore.browser().alertGetText();
-		SeleniumCore.browser().setLog("Alert text => " + alertText);
+		SeleniumCore.browser().setLogInfo("Alert text => " + alertText);
 		SeleniumCore.browser().alertAccept();
 		SeleniumCore.browser().assertTrue(expectedMsg.equals(alertText), "Alert message it's the expected");
 		SeleniumCore.browser().sleepSeconds(1);
@@ -38,7 +38,7 @@ public class JavaScriptAlerts {
 		}
 
 		String alertText = SeleniumCore.browser().alertGetText();
-		SeleniumCore.browser().setLog("Alert text => " + alertText);
+		SeleniumCore.browser().setLogInfo("Alert text => " + alertText);
 		if ("accept".equals(option))
 			SeleniumCore.browser().alertAccept();
 		else
@@ -47,7 +47,7 @@ public class JavaScriptAlerts {
 		SeleniumCore.browser().assertTrue(SeleniumCore.browser().waitForVisibility(locatorConfirmationMsg, 3),
 				"Confirmation message was showed");
 		String actionMsg = SeleniumCore.browser().getText(locatorConfirmationMsg);
-		SeleniumCore.browser().setLog("Action message => " + actionMsg);
+		SeleniumCore.browser().setLogInfo("Action message => " + actionMsg);
 
 		SeleniumCore.browser().sleepSeconds(2);
 	}
