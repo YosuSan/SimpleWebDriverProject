@@ -2,7 +2,9 @@ package selenium.core;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.URL;
 
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -12,6 +14,12 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.firefox.GeckoDriverService;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.ie.InternetExplorerDriverService;
+import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.remote.BrowserType;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +44,8 @@ public class SeleniumCore {
 
 	private int port = 4567;
 	private static UtilsSelenium utils = new UtilsSelenium();
-	private static final String DRIVERS_PATH = "lib/drivers/";
+	private final String DRIVERS_PATH = "lib/drivers/";
+	private final String REMOTE_WB_URL = "http://127.0.0.1:4444/wd/hub";
 
 	private static final Logger LOG = LoggerFactory.getLogger(SeleniumCore.class);
 
@@ -98,6 +107,24 @@ public class SeleniumCore {
 //			edgeOptions.setCapability("unexpectedAlertBehaviour", "accept");
 
 			browser().driver = new EdgeDriver(new EdgeDriverService.Builder().usingPort(port).build(), edgeOptions);
+			break;
+		case "explorer":
+			System.setProperty("webdriver.ie.driver", DRIVERS_PATH + "IEDriverServer" + extension);
+			InternetExplorerOptions ieOptions = new InternetExplorerOptions();
+
+			ieOptions.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, false);
+			ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+			ieOptions.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
+
+			browser().driver = new InternetExplorerDriver(
+					new InternetExplorerDriverService.Builder().usingPort(port).build(), ieOptions);
+			break;
+		case "remote": // This needs to have the selenium hub up
+			DesiredCapabilities remoteCap = new DesiredCapabilities();
+			remoteCap.setBrowserName(BrowserType.EDGE);
+			remoteCap.setPlatform(Platform.WINDOWS);
+
+			browser().driver = new RemoteWebDriver(new URL(REMOTE_WB_URL), remoteCap);
 			break;
 		default:
 			break;

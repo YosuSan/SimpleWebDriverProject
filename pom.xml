@@ -139,7 +139,7 @@
 
 				<configuration>
 					<suiteXmlFiles>
-						<suiteXmlFile>XML_files/testng.xml</suiteXmlFile>
+						<suiteXmlFile>XML_files/${suiteXml}</suiteXmlFile>
 					</suiteXmlFiles>
 				</configuration>
 
