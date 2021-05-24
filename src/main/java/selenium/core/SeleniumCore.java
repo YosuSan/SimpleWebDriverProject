@@ -23,6 +23,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Listeners;
@@ -43,6 +44,7 @@ import webdriver.utils.Listener;
 public class SeleniumCore {
 
 	private int port = 4567;
+	private final boolean DETAILED_JS_ERRORS_REPORT = false;
 	private static UtilsSelenium utils = new UtilsSelenium();
 	private final String DRIVERS_PATH = "lib/drivers/";
 	private final String REMOTE_WB_URL = "http://127.0.0.1:4444/wd/hub";
@@ -134,6 +136,11 @@ public class SeleniumCore {
 		browser().driver.manage().window().maximize();
 		CommonUtils.putParam("mainWindow", "");
 		browser().saveMainWindow();
+	}
+	
+	@AfterMethod
+	public void checkJSErrors(){
+		browser().checkJSErrors(DETAILED_JS_ERRORS_REPORT);
 	}
 
 	@AfterSuite()

@@ -2,6 +2,7 @@ package selenium.utils;
 
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -9,6 +10,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.Select;
 
 import webdriver.utils.CommonActions;
@@ -299,6 +303,36 @@ public class UtilsSelenium extends CommonActions {
 	public void switchToIFrame(int index) {
 		setLogInfo("Switch driver to iframe index => " + index);
 		driver.switchTo().frame(index);
+	}
+
+	/**
+	 * Check js errors, get count or warnings and severes and show it in log as INFO
+	 * Show all error messages in log if details is true
+	 * 
+	 * @param details boolean to show more details in report
+	 */
+	public void checkJSErrors(boolean details) {
+		int warnings = 0;
+		int severes = 0;
+		String warningsMsg = "";
+		String severesMsg = "";
+		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
+		for (LogEntry logEntry : logEntries) {
+			if (logEntry.getLevel().equals(Level.WARNING)) {
+				warningsMsg += logEntry.getMessage() + "<br>";
+				warnings++;
+			}
+			if (logEntry.getLevel().equals(Level.SEVERE)) {
+				severesMsg += logEntry.getMessage() + "<br>";
+				severes++;
+			}
+		}
+		if (warnings > 0)
+			setLogInfo("JavaScript log warnings: " + warnings + ((details) ? ". Details:<br>" + warningsMsg : ""));
+
+		if (severes > 0)
+			setLogInfo("JavaScript log severes: " + severes + ((details) ? ". Details:<br>" + severesMsg : ""));
+
 	}
 
 }
