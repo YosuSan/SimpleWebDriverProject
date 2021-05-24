@@ -43,7 +43,7 @@ public class AppiumNode {
 		return device;
 	}
 
-	@BeforeSuite(alwaysRun = true, dependsOnMethods = "testParams")
+	@BeforeSuite(dependsOnMethods = "testParams")
 	public void openAppiumNode() {
 
 		while (device().checkIfPortIsBusy(port))
@@ -63,7 +63,7 @@ public class AppiumNode {
 
 	}
 
-	@BeforeMethod(alwaysRun = true)
+	@BeforeMethod()
 	public void startDriver() {
 
 		clearData();
@@ -91,13 +91,13 @@ public class AppiumNode {
 
 	}
 
-	@AfterClass(alwaysRun = true)
+	@AfterClass()
 	public void closeAndClearApp() {
 		device().sendScript("adb shell am force-stop " + UtilsAppium.getParam("appPackage"));
 		device().sendScript("adb shell pm clear " + UtilsAppium.getParam("appPackage"));
 	}
 
-	@AfterSuite(alwaysRun = true)
+	@AfterSuite()
 	public void closeDriver() {
 		device().driver.quit();
 		service.stop();

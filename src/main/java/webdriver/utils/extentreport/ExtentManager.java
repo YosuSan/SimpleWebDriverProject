@@ -22,6 +22,7 @@ public class ExtentManager {
 
 			reporter = new ExtentSparkReporter(reportPath.resolve("extent-report.html").toAbsolutePath().toString());
 			reporter.config().setReportName(CommonUtils.getParam("SuiteName"));
+			reporter.config().setEncoding("utf-8");
 			extentReports.attachReporter(reporter);
 
 			setInformation();

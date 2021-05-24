@@ -62,7 +62,7 @@ public class SeleniumCore {
 		CommonUtils.putParam("browser", browser);
 	}
 
-	@BeforeSuite(alwaysRun = true, dependsOnMethods = "testParams")
+	@BeforeSuite(dependsOnMethods = "testParams")
 	public void openDriver() throws IOException {
 		String extension = System.getProperty("os.name").contains("indows") ? ".exe" : "";
 		String browser = UtilsSelenium.getParam("browser").toLowerCase();
@@ -136,7 +136,7 @@ public class SeleniumCore {
 		browser().saveMainWindow();
 	}
 
-	@AfterSuite(alwaysRun = true)
+	@AfterSuite()
 	public void closeDriver() {
 		ServerSocket socket;
 		try {

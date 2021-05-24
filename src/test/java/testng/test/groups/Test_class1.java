@@ -1,13 +1,17 @@
 package testng.test.groups;
 
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import webdriver.utils.Listener;
 
 /**
  * The purpose of this class is to know how to work with groups
  * @author Jose Sanjuan Gonzalez
  *
  */
-public class Class1 {
+@Listeners(Listener.class)
+public class Test_class1 {
 	
 	@Test(groups = { "regression" })
 	public void regressionTestsForClass1() {
