@@ -62,15 +62,16 @@ public class WebTable {
 				randomDecision(5));
 		SeleniumCore.browser().sendKeys(actualRow.findElement(locatorComments), comment);
 
-		SeleniumCore.browser().setLogInfo("*************** ROW *******************");
-		SeleniumCore.browser().setLogInfo("Usuario: " + user);
-		SeleniumCore.browser().setLogInfo("Email: " + email);
-		SeleniumCore.browser().setLogInfo("Standard: " + standard);
-		SeleniumCore.browser().setLogInfo("Premium: " + premium);
-		SeleniumCore.browser().setLogInfo("Type: " + typeSelected);
-		SeleniumCore.browser().setLogInfo("Comments: " + comment);
-		SeleniumCore.browser().setLogInfo("******************************************");
-		SeleniumCore.browser().sleepSeconds(2);
+		String rowInfo = "*************** ROW *******************<br>";
+		rowInfo += "Usuario: " + user + "<br>";
+		rowInfo += "Email: " + email + "<br>";
+		rowInfo += "Standard: " + standard + "<br>";
+		rowInfo += "Premium: " + premium + "<br>";
+		rowInfo += "Type: " + typeSelected + "<br>";
+		rowInfo += "Comments: " + comment + "<br>";
+		rowInfo += "******************************************";
+		SeleniumCore.browser().setLogInfo(rowInfo);
+		SeleniumCore.browser().sleepSeconds(1);
 	}
 
 }

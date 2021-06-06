@@ -335,4 +335,8 @@ public class UtilsSelenium extends CommonActions {
 
 	}
 
+	public List<LogEntry> getNetworkEvents() {
+		return driver.manage().logs().get(LogType.PERFORMANCE).getAll();
+	}
+
 }

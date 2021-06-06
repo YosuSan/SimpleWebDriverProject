@@ -3,6 +3,7 @@ package selenium.core;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.URL;
+import java.util.logging.Level;
 
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,6 +18,8 @@ import org.openqa.selenium.firefox.GeckoDriverService;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
 import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.BrowserType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -44,7 +47,7 @@ import webdriver.utils.Listener;
 public class SeleniumCore {
 
 	private int port = 4567;
-	private final boolean DETAILED_JS_ERRORS_REPORT = false;
+	private final boolean DETAILED_JS_ERRORS_REPORT = true;
 	private static UtilsSelenium utils = new UtilsSelenium();
 	private final String DRIVERS_PATH = "lib/drivers/";
 	private final String REMOTE_WB_URL = "http://127.0.0.1:4444/wd/hub";
@@ -78,9 +81,12 @@ public class SeleniumCore {
 		case "chrome":
 			System.setProperty("webdriver.chrome.driver", DRIVERS_PATH + "chromedriver" + extension);
 			chromeOptions = new ChromeOptions();
+			LoggingPreferences logPrefs = new LoggingPreferences();
 
+			logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
 			chromeOptions.addArguments("--incognito");
 			chromeOptions.addArguments("--start-maximized");
+			chromeOptions.setCapability("goog:loggingPrefs", logPrefs);
 			if (extension.equals("")) {
 				chromeOptions.addArguments("--disable-dev-shm-usage");
 				chromeOptions.addArguments("--no-sandbox");
@@ -137,9 +143,9 @@ public class SeleniumCore {
 		CommonUtils.putParam("mainWindow", "");
 		browser().saveMainWindow();
 	}
-	
+
 	@AfterMethod
-	public void checkJSErrors(){
+	public void checkJSErrors() {
 		browser().checkJSErrors(DETAILED_JS_ERRORS_REPORT);
 	}
 

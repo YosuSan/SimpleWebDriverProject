@@ -7,6 +7,7 @@ import java.util.Date;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
+import com.aventstack.extentreports.reporter.configuration.Theme;
 
 import webdriver.utils.CommonUtils;
 
@@ -21,7 +22,9 @@ public class ExtentManager {
 			CommonUtils.putParam("reportPath", reportPath.toAbsolutePath().toString());
 
 			reporter = new ExtentSparkReporter(reportPath.resolve("extent-report.html").toAbsolutePath().toString());
+			reporter.config().setTheme(Theme.DARK);
 			reporter.config().setReportName(CommonUtils.getParam("SuiteName"));
+			reporter.config().setDocumentTitle(CommonUtils.getParam("SuiteName"));
 			reporter.config().setEncoding("utf-8");
 			extentReports.attachReporter(reporter);
 
