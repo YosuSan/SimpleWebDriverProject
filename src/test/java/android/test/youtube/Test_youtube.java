@@ -1,33 +1,39 @@
 package android.test.youtube;
 
-import org.testng.annotations.BeforeSuite;
+import java.util.HashMap;
+
+import org.testng.ITestContext;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import android.core.AppiumNode;
 import android.pages.youtube.YoutubeCamera;
 import android.pages.youtube.YoutubeHome;
 import android.pages.youtube.YoutubeLibrary;
-import webdriver.utils.CommonUtils;
+import android.utils.UtilsAppium;
 
 public class Test_youtube extends AppiumNode {
 
 	private YoutubeHome home;
 	private YoutubeCamera camera;
 	private YoutubeLibrary library;
+	private UtilsAppium driverUtils;
+	private HashMap<String, String> capabilities;
 
 	public Test_youtube() {
-		home = new YoutubeHome();
-		camera = new YoutubeCamera();
-		library = new YoutubeLibrary();
+		capabilities = new HashMap<String, String>();
+		capabilities.put("appPackage", "com.google.android.youtube");
+		capabilities.put("appActivity", "com.google.android.apps.youtube.app.WatchWhileActivity");
+		capabilities.put("noReset", "false");
+//		capabilities.put("appWaitActivity", "");
 	}
-	
-	@BeforeSuite
-	public void testParams() {
-		CommonUtils.putParam("appPackage", "com.google.android.youtube");
-		CommonUtils.putParam("appActivity", "com.google.android.apps.youtube.app.WatchWhileActivity");
-		CommonUtils.putParam("noReset", "false");
-//		AbstractUtils.putParam("appWaitActivity", "");
-		CommonUtils.putParam("SuiteName", "Youtube");
+
+	@BeforeClass
+	public void setUp(ITestContext context) {
+		driverUtils = AppiumNode.startDriver(capabilities, context);
+		home = new YoutubeHome(driverUtils);
+		camera = new YoutubeCamera(driverUtils);
+		library = new YoutubeLibrary(driverUtils);
 	}
 
 	@Test(priority = 0, description = "Upload a video", testName = "Upload video", enabled = true)

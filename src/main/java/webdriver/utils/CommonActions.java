@@ -75,11 +75,10 @@ public abstract class CommonActions extends CommonUtils {
 	 * 
 	 * @param script
 	 */
-	@SuppressWarnings("unused")
 	public void sendScript(String script) {
 		try {
 			Runtime rt = Runtime.getRuntime();
-			Process pr = rt.exec(script);
+			rt.exec(script);
 		} catch (IOException e) {
 			LOG.error(e.getMessage());
 		}
@@ -329,7 +328,7 @@ public abstract class CommonActions extends CommonUtils {
 	}
 
 	private String screenshotPath() {
-		return getParam("reportPath") + "/screenshots/";
+		return reportPath + "/screenshots/";
 	}
 
 	/**

@@ -14,12 +14,7 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestNGMethod;
 import org.testng.ITestResult;
-
-import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.Status;
-
-import android.core.AppiumNode;
-import selenium.core.SeleniumCore;
 
 public class Listener implements ITestListener {
 
@@ -29,7 +24,7 @@ public class Listener implements ITestListener {
 	@Override
 	public void onStart(ITestContext arg0) {
 		String suiteName = arg0.getCurrentXmlTest().getSuite().getName();
-		CommonUtils.putParam("SuiteName", suiteName);
+		CommonUtils.suiteName = suiteName;
 
 		LOG.info("*****************************************");
 		LOG.info("SuiteName: " + suiteName);
@@ -46,14 +41,28 @@ public class Listener implements ITestListener {
 	public void onTestStart(ITestResult arg0) {
 		String testClass = arg0.getMethod().getRealClass().getSimpleName();
 		String testName = arg0.getName();
+		String reportTestName;
+
 		LOG.info("*****************************************");
 		LOG.info("Test Started => " + arg0.getName());
 		LOG.info("*****************************************");
-		if (CommonUtils.getParam("SuiteName") == null || CommonUtils.getParam("SuiteName").isEmpty()
-				|| CommonUtils.getParam("SuiteName").equals("Default suite"))
-			CommonUtils.putParam("SuiteName", testClass);
+		if (CommonUtils.suiteName == null || CommonUtils.suiteName.isEmpty()
+				|| CommonUtils.suiteName.equals("Default suite"))
+			CommonUtils.suiteName = testClass;
 
-		startTest(testClass + "_" + testName, arg0.getMethod().getDescription());
+		String browser = "Browser: " + (String) arg0.getAttribute("browser");
+		reportTestName = "Selenium";
+		if (browser.contains("ANDROID")) {
+			reportTestName = "Appium";
+			browser = browser.replace("Browser", "Device") + "<br>";
+			browser += "Manufacturer: " + (String) arg0.getAttribute("manufacturer") + "<br>";
+			browser += "Model: " + (String) arg0.getAttribute("model") + "<br>";
+			browser += "Api lvl: " + (String) arg0.getAttribute("apiLvl") + "<br>";
+		}
+		reportTestName += ". Class: " + testClass + ". Test: " + testName;
+
+		startTest(reportTestName, arg0.getMethod().getDescription());
+		getTest().log(Status.INFO, "<h3 style='text-align:center; background-color: green;'>" + browser + "</h3>");
 	}
 
 	@Override
@@ -64,11 +73,12 @@ public class Listener implements ITestListener {
 		LOG.info("Test Skipped:\t" + context.getSkippedTests().size());
 		LOG.info("Test Failed:\t" + context.getFailedTests().size());
 		LOG.info("*****************************************");
+
 		getExtentReports().flush();
 		if (OPEN_REPORT) {
 			try {
 				Desktop desk = Desktop.getDesktop();
-				File report = new File(CommonUtils.getParam("reportPath") + "/extent-report.html");
+				File report = new File(CommonUtils.reportPath + "/extent-report.html");
 				desk.open(report);
 			} catch (IOException e) {
 				LOG.error("Can't open report: " + e.getMessage());
@@ -86,17 +96,9 @@ public class Listener implements ITestListener {
 		getTest().log(Status.SKIP, "Test skipped");
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	public void onTestFailure(ITestResult result) {
-		Object testClass = result.getInstance();
-		if (testClass instanceof SeleniumCore)
-			((SeleniumCore) testClass).browser().takeScreenShot();
-		if (testClass instanceof AppiumNode)
-			((AppiumNode) testClass).device().takeScreenShot();
-
-		String screenshot = CommonActions.getParam("screenshot");
-		getTest().log(Status.FAIL, "Test failed", MediaEntityBuilder.createScreenCaptureFromPath(screenshot).build());
+		getTest().log(Status.FAIL, "Test failed");
 	}
 
 }

@@ -1,13 +1,18 @@
 package selenium.pages.dezlearn;
 
 import org.openqa.selenium.By;
-
-import selenium.core.SeleniumCore;
+import selenium.utils.UtilsSelenium;
 
 public class IFramesNested {
 
+	private UtilsSelenium driverUtils;
+
+	public IFramesNested(UtilsSelenium driverUtils) {
+		this.driverUtils = driverUtils;
+	}
+
 	private void goPage() {
-		SeleniumCore.browser().goToUrl(Urls.NESTED_IFRAMES.getUrl());
+		driverUtils.goToUrl(Urls.NESTED_IFRAMES.getUrl());
 	}
 
 	By locatorParentIframe = By.id("parent_iframe");
@@ -20,18 +25,18 @@ public class IFramesNested {
 	public void clickInNestedIframes() {
 		goPage();
 
-		SeleniumCore.browser().switchToIFrame(locatorParentIframe);
-		SeleniumCore.browser().click(locatorParentButton);
-		String parentMsg = SeleniumCore.browser().getText(locatorParentMsg);
-		SeleniumCore.browser().setLogInfo("Message inside parent iframe => " + parentMsg);
-		SeleniumCore.browser().assertTrue(parentMsg.contains("iframe 1"), "Correct expected message");
-		SeleniumCore.browser().sleepSeconds(2);
+		driverUtils.switchToIFrame(locatorParentIframe);
+		driverUtils.click(locatorParentButton);
+		String parentMsg = driverUtils.getText(locatorParentMsg);
+		driverUtils.setLogInfo("Message inside parent iframe => " + parentMsg);
+		driverUtils.assertTrue(parentMsg.contains("iframe 1"), "Correct expected message");
+		driverUtils.sleepSeconds(2);
 
-		SeleniumCore.browser().switchToIFrame(locatorNestedIframe);
-		SeleniumCore.browser().click(locatorNestedButton);
-		String nestedtMsg = SeleniumCore.browser().getText(locatorNestedMsg);
-		SeleniumCore.browser().setLogInfo("Message inside nested iframe => " + nestedtMsg);
-		SeleniumCore.browser().assertTrue(nestedtMsg.contains("iframe 2"), "Correct expected message");
-		SeleniumCore.browser().sleepSeconds(2);
+		driverUtils.switchToIFrame(locatorNestedIframe);
+		driverUtils.click(locatorNestedButton);
+		String nestedtMsg = driverUtils.getText(locatorNestedMsg);
+		driverUtils.setLogInfo("Message inside nested iframe => " + nestedtMsg);
+		driverUtils.assertTrue(nestedtMsg.contains("iframe 2"), "Correct expected message");
+		driverUtils.sleepSeconds(2);
 	}
 }

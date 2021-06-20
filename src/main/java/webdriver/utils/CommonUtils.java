@@ -24,14 +24,20 @@ import com.aventstack.extentreports.Status;
  */
 public class CommonUtils {
 
-	private static HashMap<String, String> params = new HashMap<>();
+	private HashMap<String, String> params = new HashMap<>();
 	public final Logger LOG = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	public static String suiteName = "";
+	public static String reportPath = "";
 
-	public static void putParam(String key, String value) {
+	public void putCapabilities(HashMap<String, String> capabilities) {
+		params.putAll(capabilities);
+	}
+	
+	public void putParam(String key, String value) {
 		params.put(key, value);
 	}
 
-	public static String getParam(String key) {
+	public String getParam(String key) {
 		return params.get(key);
 	}
 

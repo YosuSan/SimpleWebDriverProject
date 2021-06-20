@@ -1,7 +1,6 @@
 package selenium.core;
 
-import java.io.IOException;
-import java.net.ServerSocket;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 
@@ -26,15 +25,14 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.ITestContext;
+import org.testng.ITestResult;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
 
 import selenium.utils.UtilsSelenium;
-import webdriver.utils.CommonUtils;
 import webdriver.utils.Listener;
 
 @Listeners(Listener.class)
@@ -46,36 +44,17 @@ import webdriver.utils.Listener;
  */
 public class SeleniumCore {
 
-	private int port = 4567;
+	private final static String DRIVERS_PATH = "lib/drivers/";
+	private final static String REMOTE_WB_URL = "http://127.0.0.1:4444/wd/hub";
+	private final boolean CHECK_JS_ERRORS = true;
 	private final boolean DETAILED_JS_ERRORS_REPORT = true;
-	private static UtilsSelenium utils = new UtilsSelenium();
-	private final String DRIVERS_PATH = "lib/drivers/";
-	private final String REMOTE_WB_URL = "http://127.0.0.1:4444/wd/hub";
-
 	private static final Logger LOG = LoggerFactory.getLogger(SeleniumCore.class);
 
-	/**
-	 * @return current browser on use
-	 */
-	public static UtilsSelenium browser() {
-		return utils;
-	}
-
-	@BeforeSuite
-	@Parameters({ "browser" })
-	public void testParams(@Optional("chrome") String browser) {
-		CommonUtils.putParam("browser", browser);
-	}
-
-	@BeforeSuite(dependsOnMethods = "testParams")
-	public void openDriver() throws IOException {
+	public static UtilsSelenium openDriver(String browser, ITestContext context) {
+		UtilsSelenium driverUtils = new UtilsSelenium();
 		String extension = System.getProperty("os.name").contains("indows") ? ".exe" : "";
-		String browser = UtilsSelenium.getParam("browser").toLowerCase();
+		driverUtils.putParam("browser", browser);
 		ChromeOptions chromeOptions;
-
-		while (browser().checkIfPortIsBusy(port))
-			port += 100;
-		LOG.info("Open Selenium driver on port => " + port);
 
 		switch (browser) {
 		case "chrome":
@@ -92,7 +71,7 @@ public class SeleniumCore {
 				chromeOptions.addArguments("--no-sandbox");
 				chromeOptions.addArguments("--headless");
 			}
-			browser().driver = new ChromeDriver(new ChromeDriverService.Builder().usingPort(port).build(),
+			driverUtils.driver = new ChromeDriver(new ChromeDriverService.Builder().usingAnyFreePort().build(),
 					chromeOptions);
 			break;
 		case "firefox":
@@ -103,7 +82,7 @@ public class SeleniumCore {
 			if (extension.equals(""))
 				firefoxOptions.addArguments("-headless");
 
-			browser().driver = new FirefoxDriver(new GeckoDriverService.Builder().usingPort(port).build(),
+			driverUtils.driver = new FirefoxDriver(new GeckoDriverService.Builder().usingAnyFreePort().build(),
 					firefoxOptions);
 			break;
 		case "edge":
@@ -114,7 +93,8 @@ public class SeleniumCore {
 			edgeOptions.setCapability("requireWindowFocus", false);
 //			edgeOptions.setCapability("unexpectedAlertBehaviour", "accept");
 
-			browser().driver = new EdgeDriver(new EdgeDriverService.Builder().usingPort(port).build(), edgeOptions);
+			driverUtils.driver = new EdgeDriver(new EdgeDriverService.Builder().usingAnyFreePort().build(),
+					edgeOptions);
 			break;
 		case "explorer":
 			System.setProperty("webdriver.ie.driver", DRIVERS_PATH + "IEDriverServer" + extension);
@@ -124,47 +104,61 @@ public class SeleniumCore {
 			ieOptions.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
 			ieOptions.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
 
-			browser().driver = new InternetExplorerDriver(
-					new InternetExplorerDriverService.Builder().usingPort(port).build(), ieOptions);
+			driverUtils.driver = new InternetExplorerDriver(
+					new InternetExplorerDriverService.Builder().usingAnyFreePort().build(), ieOptions);
 			break;
 		case "remote": // This needs to have the selenium hub up
 			DesiredCapabilities remoteCap = new DesiredCapabilities();
 			remoteCap.setBrowserName(BrowserType.EDGE);
 			remoteCap.setPlatform(Platform.WINDOWS);
-
-			browser().driver = new RemoteWebDriver(new URL(REMOTE_WB_URL), remoteCap);
+			try {
+				driverUtils.driver = new RemoteWebDriver(new URL(REMOTE_WB_URL), remoteCap);
+			} catch (MalformedURLException e) {
+				driverUtils.setLogError("Exception while create remote driver: " + e.getMessage());
+				driverUtils.assertTrue(false);
+			}
 			break;
 		default:
+			LOG.error("Unknow browser: " + browser);
+			System.exit(1);
 			break;
 		}
 
-		browser().wait = new WebDriverWait(browser().driver, 10);
-		browser().driver.manage().window().maximize();
-		CommonUtils.putParam("mainWindow", "");
-		browser().saveMainWindow();
+		LOG.info("Opened a " + browser + " Selenium driver");
+		driverUtils.wait = new WebDriverWait(driverUtils.driver, 10);
+		driverUtils.driver.manage().window().maximize();
+		driverUtils.putParam("mainWindow", "");
+		driverUtils.saveMainWindow();
+
+		context.setAttribute("driverUtils", driverUtils);
+		context.setAttribute("browser", browser);
+		return driverUtils;
+	}
+
+	@BeforeMethod
+	public void setBrowserName(ITestContext context, ITestResult result) {
+		String browser = ((String) context.getAttribute("browser")).toUpperCase();
+		result.setAttribute("browser", browser);
 	}
 
 	@AfterMethod
-	public void checkJSErrors() {
-		browser().checkJSErrors(DETAILED_JS_ERRORS_REPORT);
+	public void setMethodFinishInfo(ITestContext context) {
+		UtilsSelenium driverUtils = (UtilsSelenium) context.getAttribute("driverUtils");
+		driverUtils.takeScreenShot();
+		driverUtils.setLogInfo("Test finish");
+
+		if (CHECK_JS_ERRORS && driverUtils.getParam("browser").equals("chrome"))
+			driverUtils.checkJSErrors(DETAILED_JS_ERRORS_REPORT);
 	}
 
-	@AfterSuite()
-	public void closeDriver() {
-		ServerSocket socket;
-		try {
-			socket = new ServerSocket(port);
-			socket.close();
-		} catch (IOException e) {
-			e.getMessage();
-		} finally {
-			socket = null;
-		}
-		browser().driver.quit();
-		browser().driver = null;
-		browser().clearParams();
-
-		LOG.info("The port is busy => " + browser().checkIfPortIsBusy(port));
-		port = 4567;
+	@AfterClass
+	public void closeDriver(ITestContext context) {
+		UtilsSelenium driverUtils = (UtilsSelenium) context.getAttribute("driverUtils");
+		String browser = (String) context.getAttribute("browser");
+		LOG.info("Closing " + browser + " Selenium driver");
+		driverUtils.driver.quit();
+		driverUtils.driver = null;
+		driverUtils.clearParams();
 	}
+
 }

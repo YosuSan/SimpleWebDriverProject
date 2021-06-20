@@ -2,9 +2,15 @@ package android.pages.youtube;
 
 import org.openqa.selenium.By;
 
-import android.core.AppiumNode;
+import android.utils.UtilsAppium;
 
 public class YoutubeCamera {
+
+	private UtilsAppium driverUtils;
+
+	public YoutubeCamera(UtilsAppium driverUtils) {
+		this.driverUtils = driverUtils;
+	}
 
 	By locatorRec = By.id("com.google.android.youtube:id/camera_overlay");
 	By locatorShutter = By.id("com.android.camera2:id/shutter_button");
@@ -14,22 +20,19 @@ public class YoutubeCamera {
 	By locatorUpload = By.xpath("//android.view.ViewGroup[@content-desc=\"Subir\"]");
 
 	public void uploadVideo(boolean storageVideo) {
-		if (storageVideo && AppiumNode.device().click(locatorFirstVideo)) {
-			AppiumNode.device().assertTrue(storageVideo, "Storaged video was selected");
+		if (storageVideo && driverUtils.click(locatorFirstVideo)) {
+			driverUtils.assertTrue(storageVideo, "Storaged video was selected");
 		} else {
-			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorRec), "locatorRec was clicked");
-			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorShutter),
-					"locatorShutter couldn't be clicked\n");
-			AppiumNode.device().sleepSeconds(10);
-			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorShutter),
-					"locatorShutter couldn't be clicked\n");
-			AppiumNode.device().assertTrue(AppiumNode.device().click(locatorDone), "locatorDone was clicked");
+			driverUtils.assertTrue(driverUtils.click(locatorRec), "locatorRec was clicked");
+			driverUtils.assertTrue(driverUtils.click(locatorShutter), "locatorShutter couldn't be clicked\n");
+			driverUtils.sleepSeconds(10);
+			driverUtils.assertTrue(driverUtils.click(locatorShutter), "locatorShutter couldn't be clicked\n");
+			driverUtils.assertTrue(driverUtils.click(locatorDone), "locatorDone was clicked");
 		}
 
-		AppiumNode.device().sleepSeconds(2);
-		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorSend), "locatorSend was clicked");
-		AppiumNode.device().assertTrue(AppiumNode.device().click(locatorUpload), "locatorUpload was clicked");
-
+		driverUtils.sleepSeconds(2);
+		driverUtils.assertTrue(driverUtils.click(locatorSend), "locatorSend was clicked");
+		driverUtils.assertTrue(driverUtils.click(locatorUpload), "locatorUpload was clicked");
 	}
 
 }

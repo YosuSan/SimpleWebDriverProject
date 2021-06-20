@@ -2,12 +2,18 @@ package selenium.pages.dezlearn;
 
 import org.openqa.selenium.By;
 
-import selenium.core.SeleniumCore;
+import selenium.utils.UtilsSelenium;
 
 public class TestSync {
 
+	private UtilsSelenium driverUtils;
+
+	public TestSync(UtilsSelenium driverUtils) {
+		this.driverUtils = driverUtils;
+	}
+
 	private void goPage() {
-		SeleniumCore.browser().goToUrl(Urls.TEST_SYNC.getUrl());
+		driverUtils.goToUrl(Urls.TEST_SYNC.getUrl());
 	}
 
 	By locatorFirstName = By.name("fname");
@@ -20,16 +26,15 @@ public class TestSync {
 
 		goPage();
 
-		SeleniumCore.browser().waitForVisibility(locatorFirstName, 5);
-		SeleniumCore.browser().sendKeys(locatorFirstName, firstName);
-		SeleniumCore.browser().sendKeys(locatorLastName, lastName);
-		SeleniumCore.browser().sendKeys(locatorEmail, email);
-		SeleniumCore.browser().click(locatorButtonSubmit);
+		driverUtils.waitForVisibility(locatorFirstName, 5);
+		driverUtils.sendKeys(locatorFirstName, firstName);
+		driverUtils.sendKeys(locatorLastName, lastName);
+		driverUtils.sendKeys(locatorEmail, email);
+		driverUtils.click(locatorButtonSubmit);
 
-		SeleniumCore.browser().assertTrue(SeleniumCore.browser().waitForVisibility(locatorProcessOrder, 10),
-				"The order number appears");
-		String order = SeleniumCore.browser().getText(locatorProcessOrder);
-		SeleniumCore.browser().setLogInfo("<mark>" + order + "</mark>");
+		driverUtils.assertTrue(driverUtils.waitForVisibility(locatorProcessOrder, 10), "The order number appears");
+		String order = driverUtils.getText(locatorProcessOrder);
+		driverUtils.setLogInfo("<mark>" + order + "</mark>");
 
 	}
 

@@ -2,12 +2,18 @@ package selenium.pages.dezlearn;
 
 import org.openqa.selenium.By;
 
-import selenium.core.SeleniumCore;
+import selenium.utils.UtilsSelenium;
 
 public class MultiWindow {
 
+	private UtilsSelenium driverUtils;
+
+	public MultiWindow(UtilsSelenium driverUtils) {
+		this.driverUtils = driverUtils;
+	}
+
 	private void goPage() {
-		SeleniumCore.browser().goToUrl(Urls.MULTIPLE_TABS.getUrl());
+		driverUtils.goToUrl(Urls.MULTIPLE_TABS.getUrl());
 	}
 
 	By locatorLaunchWindows = By.id("u_7_8");
@@ -15,19 +21,19 @@ public class MultiWindow {
 	public void checkAndCloseNewWindows() {
 		goPage();
 
-		SeleniumCore.browser().waitForVisibility(locatorLaunchWindows, 5);
-		SeleniumCore.browser().click(locatorLaunchWindows);
+		driverUtils.waitForVisibility(locatorLaunchWindows, 5);
+		driverUtils.click(locatorLaunchWindows);
 
-		SeleniumCore.browser().sleepSeconds(2);
+		driverUtils.sleepSeconds(2);
 
-		while (SeleniumCore.browser().getWindows().size() > 1) {
-			SeleniumCore.browser().switchWindowFromMain();
-			SeleniumCore.browser().setLogInfo("Switched to window => " + SeleniumCore.browser().driver().getWindowHandle());
-			String currentUrl = SeleniumCore.browser().driver().getCurrentUrl();
-			SeleniumCore.browser().setLogInfo("New tab in url '" + currentUrl + "' will be closed in 1 seconds");
-			SeleniumCore.browser().sleepSeconds(1);
-			SeleniumCore.browser().driver().close();
-			SeleniumCore.browser().switchToMainWindow();
+		while (driverUtils.getWindows().size() > 1) {
+			driverUtils.switchWindowFromMain();
+			driverUtils.setLogInfo("Switched to window => " + driverUtils.driver().getWindowHandle());
+			String currentUrl = driverUtils.driver().getCurrentUrl();
+			driverUtils.setLogInfo("New tab in url '" + currentUrl + "' will be closed in 1 seconds");
+			driverUtils.sleepSeconds(1);
+			driverUtils.driver().close();
+			driverUtils.switchToMainWindow();
 		}
 
 	}

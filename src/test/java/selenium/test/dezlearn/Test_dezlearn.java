@@ -1,6 +1,10 @@
 package selenium.test.dezlearn;
 
+import org.testng.ITestContext;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import selenium.core.SeleniumCore;
@@ -10,6 +14,7 @@ import selenium.pages.dezlearn.JavaScriptAlerts;
 import selenium.pages.dezlearn.MultiWindow;
 import selenium.pages.dezlearn.TestSync;
 import selenium.pages.dezlearn.WebTable;
+import selenium.utils.UtilsSelenium;
 
 public class Test_dezlearn extends SeleniumCore {
 
@@ -19,14 +24,18 @@ public class Test_dezlearn extends SeleniumCore {
 	private JavaScriptAlerts alerts;
 	private IFrames iframes;
 	private IFramesNested iframesNested;
+	private UtilsSelenium driverUtils;
 
-	public Test_dezlearn() {
-		testSync = new TestSync();
-		multiWindows = new MultiWindow();
-		webTable = new WebTable();
-		alerts = new JavaScriptAlerts();
-		iframes = new IFrames();
-		iframesNested = new IFramesNested();
+	@BeforeClass
+	@Parameters({ "browser" })
+	public void setUp(@Optional("chrome") String browser, ITestContext context) {
+		driverUtils = SeleniumCore.openDriver(browser, context);
+		testSync = new TestSync(driverUtils);
+		multiWindows = new MultiWindow(driverUtils);
+		webTable = new WebTable(driverUtils);
+		alerts = new JavaScriptAlerts(driverUtils);
+		iframes = new IFrames(driverUtils);
+		iframesNested = new IFramesNested(driverUtils);
 	}
 
 	@DataProvider(name = "users")
@@ -54,19 +63,19 @@ public class Test_dezlearn extends SeleniumCore {
 
 	@Test(description = "Manage all alerts types", testName = "Alerts")
 	public void test04_workingWithAlerts() {
-		browser().setLogInfo("<mark>Simple alert</mark>");
+		driverUtils.setLogInfo("<mark>Simple alert</mark>");
 		alerts.simpleAlert();
 
-		browser().setLogInfo("<mark>Confirm alert accept</mark>");
+		driverUtils.setLogInfo("<mark>Confirm alert accept</mark>");
 		alerts.confirmationManagement("accept");
 
-		browser().setLogInfo("<mark>Confirm alert cancel</mark>");
+		driverUtils.setLogInfo("<mark>Confirm alert cancel</mark>");
 		alerts.confirmationManagement("cancel");
 
-		browser().setLogInfo("<mark>Promt alert accept</mark>");
+		driverUtils.setLogInfo("<mark>Promt alert accept</mark>");
 		alerts.promptAlert("Mensaje de alerta", "accept");
 
-		browser().setLogInfo("<mark>Promt alert cancel</mark>");
+		driverUtils.setLogInfo("<mark>Promt alert cancel</mark>");
 		alerts.promptAlert("Mensaje de alerta", "cancel");
 	}
 

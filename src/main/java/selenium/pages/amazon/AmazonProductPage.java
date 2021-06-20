@@ -2,9 +2,15 @@ package selenium.pages.amazon;
 
 import org.openqa.selenium.By;
 
-import selenium.core.SeleniumCore;
+import selenium.utils.UtilsSelenium;
 
 public class AmazonProductPage {
+
+	private UtilsSelenium driverUtils;
+
+	public AmazonProductPage(UtilsSelenium driverUtils) {
+		this.driverUtils = driverUtils;
+	}
 
 	By locatorFirstResult = By.xpath("//div[contains(@class, 'results')]//h2/a");
 	By locatorBuy = By.xpath("//input[@id='buy-now-button']");
@@ -12,21 +18,21 @@ public class AmazonProductPage {
 
 	public void browseProduct(String quantity) {
 		boolean check = false;
-		SeleniumCore.browser().click(locatorFirstResult);
-		if (SeleniumCore.browser().waitForVisibility(locatorBuy)) {
+		driverUtils.click(locatorFirstResult);
+		if (driverUtils.waitForVisibility(locatorBuy)) {
 			try {
-				SeleniumCore.browser().selectInSelectByText(locatorQuantity, quantity);
+				driverUtils.selectInSelectByText(locatorQuantity, quantity);
 			} catch (Exception e) {
-				SeleniumCore.browser().setLogInfo("Can't select quantity");
+				driverUtils.setLogInfo("Can't select quantity");
 			}
 			for (int i = 0; i < 8; i++) {
-				SeleniumCore.browser().scrollDown();
-				SeleniumCore.browser().sleepSeconds(1);
+				driverUtils.scrollDown();
+				driverUtils.sleepSeconds(1);
 			}
-			SeleniumCore.browser().sleepSeconds(2);
+			driverUtils.sleepSeconds(2);
 			check = true;
 		}
-		SeleniumCore.browser().assertTrue(check, "Correct browse content");
+		driverUtils.assertTrue(check, "Correct browse content");
 	}
 
 }
